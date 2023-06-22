@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'D:\blender\geometry_nodes')
+sys.path.append(r'F:\geometry_nodes')
 import geometry_nodes as gn
 import bpy
 
@@ -38,7 +38,7 @@ def camel_to_snake(camel_str):
     return re.sub('([a-z0-9])([A-Z])', r'\1_\2', str1).lower()
 
 
-ng = bpy.data.node_groups['Geometry Nodes']
+ng = bpy.context.space_data.edit_tree
 classes = dir(bpy.types)
 
 for cls in classes:
@@ -56,7 +56,7 @@ def get_dv(socket):
     if socket.type == 'VECTOR': return str(list(socket.default_value))
     return 'None'
 
-
+fn = 'import bpy\nng=bpy.context.space_data.edit_tree\n'
 for node in ng.nodes:
     inputs = node.inputs.keys()
     outputs = node.outputs.keys()
@@ -72,18 +72,31 @@ for node in ng.nodes:
     fn_name = camel_to_snake(fn_name)
 
     args = [x.lower().replace(' ', '_') for x in inputs]
+    actual_args = args.copy()
     args = zip(args, inputs_default)
     args = [x+'='+get_dv(y) for x,y in args]
-    args = ','.join(args)
+    args = ', '.join(args)
 
     props = [x+'='+ str(getattr(node, x)) if not isinstance(getattr(node, x), str) else f"{x}='{getattr(node, x)}'"  for x in props]
-    props = ','.join(props)
-    fn = f'''
-    def {fn_name}({args},{props}):
-    '''    
-    print(fn)
+    props = ', '.join(props)
+    args_props = f'{args}, {props}' if props is not None else f'{args}'
+    fn += f'''
+def {fn_name}({args_props}):
+    node = ng.nodes.new("{node.bl_idname}")
+'''
+    for inp,arg in zip(inputs, actual_args):
+        fn += f'''    if isinstance({arg}, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["{inp}"], {arg})
+    else:
+        node.inputs["{inp}"] = {arg}\n'''
+    
+    props = set(dir(node)).difference(COMMON_PROPS)
+    for prop in props:
+        fn += f'    node.{prop} = {prop}\n'
 
-    break
+
+with open(r'F:\geometry_nodes\generated_nodes.py', 'w') as f:
+    f.write(fn)
 
 # print('Outputs', node_outputs)
 # print('Inputs', node_inputs)
