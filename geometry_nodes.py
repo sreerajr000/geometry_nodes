@@ -42,7 +42,10 @@ def bfs_arrange_nodes(node_tree, root_node, base_spacing=20):
             node.location.x = max_x_position - node.location.x
 
 
+    return node
+
 def create_group_socket(nodetree, node, data, inout='in'):
+
     def update_socket_info(socket, socket_info):
         dv_dict = {
             'NodeSocketBool': False,
@@ -91,6 +94,7 @@ def create_group_socket(nodetree, node, data, inout='in'):
         update_socket_info(socket, socket_info)
 
 
+
 def create_gn(name, inputs, outputs):
     if name in bpy.data.node_groups:
         bpy.data.node_groups.remove(bpy.data.node_groups[name])
@@ -100,10 +104,12 @@ def create_gn(name, inputs, outputs):
 
     create_group_socket(nodetree, inps, inputs, 'in')
     create_group_socket(nodetree, outs, outputs, 'out')
-    return nodetree
+    return nodetree, inps, outs
+
 
 
 def create_node_function(node_type):
+
     def create_node(**kwargs):
         # Get the active object
         obj = bpy.context.active_object
@@ -343,6 +349,7 @@ def create_node_function(node_type):
 # vector_rotate = create_node_function('ShaderNodeVectorRotate')
 
 
+
 def align_euler_to_vector(ng, rotation=[0.0, 0.0, 0.0], factor=1.0, vector=[0.0, 0.0, 1.0], axis='X', pivot_axis='AUTO'):
 
     node = ng.nodes.new("FunctionNodeAlignEulerToVector")
@@ -362,6 +369,8 @@ def align_euler_to_vector(ng, rotation=[0.0, 0.0, 0.0], factor=1.0, vector=[0.0,
     node.pivot_axis = pivot_axis
 
 
+    return node
+
 def boolean_math(ng, a=False, b=False, operation='AND'):
 
     node = ng.nodes.new("FunctionNodeBooleanMath")
@@ -375,6 +384,8 @@ def boolean_math(ng, a=False, b=False, operation='AND'):
         node.inputs[1] = b
     node.operation = operation
 
+
+    return node
 
 def combine_color(ng, red=0.0, green=0.0, blue=0.0, alpha=1.0, mode='RGB'):
 
@@ -397,6 +408,8 @@ def combine_color(ng, red=0.0, green=0.0, blue=0.0, alpha=1.0, mode='RGB'):
         node.inputs["Alpha"].default_value = alpha
     node.mode = mode
 
+
+    return node
 
 def compare_float(ng, a=0, b=0, c=0.8999999761581421, angle=0.08726649731397629, epsilon=0.0010000000474974513, operation='GREATER_THAN', mode='ELEMENT', data_type='FLOAT'):
 
@@ -426,6 +439,8 @@ def compare_float(ng, a=0, b=0, c=0.8999999761581421, angle=0.08726649731397629,
     node.data_type = data_type
 
 
+    return node
+
 def compare_int(ng, a=0, b=0, c=0.8999999761581421, angle=0.08726649731397629, epsilon=0.0010000000474974513, operation='GREATER_THAN', mode='ELEMENT', data_type='INT'):
 
     node = ng.nodes.new("FunctionNodeCompare")
@@ -453,6 +468,8 @@ def compare_int(ng, a=0, b=0, c=0.8999999761581421, angle=0.08726649731397629, e
     node.mode = mode
     node.data_type = data_type
 
+
+    return node
 
 def compare_vector(ng, a=(0, 0, 0), b=(0, 0, 0), c=0.8999999761581421, angle=0.08726649731397629, epsilon=0.0010000000474974513, operation='GREATER_THAN', mode='ELEMENT', data_type='VECTOR'):
 
@@ -482,6 +499,8 @@ def compare_vector(ng, a=(0, 0, 0), b=(0, 0, 0), c=0.8999999761581421, angle=0.0
     node.data_type = data_type
 
 
+    return node
+
 def compare_string(ng, a='', b='', c=0.8999999761581421, angle=0.08726649731397629, epsilon=0.0010000000474974513, operation='GREATER_THAN', mode='ELEMENT', data_type='STRING'):
 
     node = ng.nodes.new("FunctionNodeCompare")
@@ -509,6 +528,8 @@ def compare_string(ng, a='', b='', c=0.8999999761581421, angle=0.087266497313976
     node.mode = mode
     node.data_type = data_type
 
+
+    return node
 
 def compare_color(ng, a=(0, 0, 0, 0), b=(0, 0, 0, 0), c=0.8999999761581421, angle=0.08726649731397629, epsilon=0.0010000000474974513, operation='GREATER_THAN', mode='ELEMENT', data_type='COLOR'):
 
@@ -538,6 +559,8 @@ def compare_color(ng, a=(0, 0, 0, 0), b=(0, 0, 0, 0), c=0.8999999761581421, angl
     node.data_type = data_type
 
 
+    return node
+
 def float_to_int(ng, float=0.0, rounding_mode='ROUND'):
 
     node = ng.nodes.new("FunctionNodeFloatToInt")
@@ -548,11 +571,15 @@ def float_to_int(ng, float=0.0, rounding_mode='ROUND'):
     node.rounding_mode = rounding_mode
 
 
+    return node
+
 def input_bool(ng, boolean=False):
 
     node = ng.nodes.new("FunctionNodeInputBool")
     node.boolean = boolean
 
+
+    return node
 
 def input_color(ng, color=(0, 0, 0, 0)):
 
@@ -560,16 +587,22 @@ def input_color(ng, color=(0, 0, 0, 0)):
     node.color = color
 
 
+    return node
+
 def input_int(ng, integer=0):
 
     node = ng.nodes.new("FunctionNodeInputInt")
     node.integer = integer
 
 
+    return node
+
 def input_special_characters(ng, ):
 
     node = ng.nodes.new("FunctionNodeInputSpecialCharacters")
 
+
+    return node
 
 def input_string(ng, string=''):
 
@@ -577,11 +610,15 @@ def input_string(ng, string=''):
     node.string = string
 
 
+    return node
+
 def input_vector(ng, vector=(0.0000, 0.0000, 0.0000)):
 
     node = ng.nodes.new("FunctionNodeInputVector")
     node.vector = vector
 
+
+    return node
 
 def random_value_float(ng, min=(0, 0, 0), max=(1, 1, 1), probability=0.5, id=None, seed=None, data_type='FLOAT'):
 
@@ -609,6 +646,8 @@ def random_value_float(ng, min=(0, 0, 0), max=(1, 1, 1), probability=0.5, id=Non
     node.data_type = data_type
 
 
+    return node
+
 def random_value_int(ng, min=(0, 0, 0), max=(1, 1, 1), probability=0.5, id=None, seed=None, data_type='INT'):
 
     node = ng.nodes.new("FunctionNodeRandomValue")
@@ -634,6 +673,8 @@ def random_value_int(ng, min=(0, 0, 0), max=(1, 1, 1), probability=0.5, id=None,
         node.inputs["Seed"].default_value = seed
     node.data_type = data_type
 
+
+    return node
 
 def random_value_vector(ng, min=(0, 0, 0), max=(1, 1, 1), probability=0.5, id=None, seed=None, data_type='VECTOR_FLOAT'):
 
@@ -661,6 +702,8 @@ def random_value_vector(ng, min=(0, 0, 0), max=(1, 1, 1), probability=0.5, id=No
     node.data_type = data_type
 
 
+    return node
+
 def replace_string(ng, string,  find=None, replace=None, ):
 
     node = ng.nodes.new("FunctionNodeReplaceString")
@@ -677,6 +720,8 @@ def replace_string(ng, string,  find=None, replace=None, ):
     else:
         node.inputs["Replace"].default_value = replace
 
+
+    return node
 
 def rotate_euler(ng, rotation=[0.0, 0.0, 0.0], rotate_by=[0.0, 0.0, 0.0], axis=[0.0, 0.0, 1.0], angle=0.0, space='OBJECT'):
 
@@ -700,6 +745,8 @@ def rotate_euler(ng, rotation=[0.0, 0.0, 0.0], rotate_by=[0.0, 0.0, 0.0], axis=[
     node.space = space
 
 
+    return node
+
 def separate_color(ng, color=None, mode='RGB'):
 
     node = ng.nodes.new("FunctionNodeSeparateColor")
@@ -709,6 +756,8 @@ def separate_color(ng, color=None, mode='RGB'):
         node.inputs["Color"].default_value = color
     node.mode = mode
 
+
+    return node
 
 def slice_string(ng, string,  position=None, length=None, ):
 
@@ -727,6 +776,8 @@ def slice_string(ng, string,  position=None, length=None, ):
         node.inputs["Length"].default_value = length
 
 
+    return node
+
 def string_length(ng, string,):
 
     node = ng.nodes.new("FunctionNodeStringLength")
@@ -735,6 +786,8 @@ def string_length(ng, string,):
     else:
         node.inputs["String"].default_value = string
 
+
+    return node
 
 def value_to_string(ng, value=0.0, decimals=None, ):
 
@@ -748,6 +801,8 @@ def value_to_string(ng, value=0.0, decimals=None, ):
     else:
         node.inputs["Decimals"].default_value = decimals
 
+
+    return node
 
 def accumulate_field_float(ng, value=[1.0, 1.0, 1.0], group_id=None, domain='POINT', data_type='FLOAT'):
 
@@ -764,6 +819,8 @@ def accumulate_field_float(ng, value=[1.0, 1.0, 1.0], group_id=None, domain='POI
     node.data_type = data_type
 
 
+    return node
+
 def accumulate_field_int(ng, value=[1.0, 1.0, 1.0], group_id=None, domain='POINT', data_type='INT'):
 
     node = ng.nodes.new("GeometryNodeAccumulateField")
@@ -778,6 +835,8 @@ def accumulate_field_int(ng, value=[1.0, 1.0, 1.0], group_id=None, domain='POINT
     node.domain = domain
     node.data_type = data_type
 
+
+    return node
 
 def accumulate_field_vector(ng, value=[1.0, 1.0, 1.0], group_id=None, domain='POINT', data_type='VECTOR_FLOAT'):
 
@@ -794,6 +853,8 @@ def accumulate_field_vector(ng, value=[1.0, 1.0, 1.0], group_id=None, domain='PO
     node.data_type = data_type
 
 
+    return node
+
 def attribute_domain_size(ng, geometry=None, component='MESH'):
 
     node = ng.nodes.new("GeometryNodeAttributeDomainSize")
@@ -803,6 +864,8 @@ def attribute_domain_size(ng, geometry=None, component='MESH'):
         node.inputs["Geometry"].default_value = geometry
     node.component = component
 
+
+    return node
 
 def attribute_statistic_float(ng, geometry=None, selection=None, attribute=0.0, domain='POINT', data_type='FLOAT'):
 
@@ -824,6 +887,8 @@ def attribute_statistic_float(ng, geometry=None, selection=None, attribute=0.0, 
     node.data_type = data_type
 
 
+    return node
+
 def attribute_statistic_vector(ng, geometry=None, selection=None, attribute=0.0, domain='POINT', data_type='FLOAT_VECTOR'):
 
     node = ng.nodes.new("GeometryNodeAttributeStatistic")
@@ -844,6 +909,8 @@ def attribute_statistic_vector(ng, geometry=None, selection=None, attribute=0.0,
     node.data_type = data_type
 
 
+    return node
+
 def blur_attribute_color(ng, value=0.0, iterations=None, weight=1.0, data_type='COLOR'):
 
     node = ng.nodes.new("GeometryNodeBlurAttribute")
@@ -862,6 +929,8 @@ def blur_attribute_color(ng, value=0.0, iterations=None, weight=1.0, data_type='
         node.inputs["Weight"].default_value = weight
     node.data_type = data_type
 
+
+    return node
 
 def blur_attribute_float(ng, value=0.0, iterations=None, weight=1.0, data_type='FLOAT'):
 
@@ -882,6 +951,8 @@ def blur_attribute_float(ng, value=0.0, iterations=None, weight=1.0, data_type='
     node.data_type = data_type
 
 
+    return node
+
 def blur_attribute_int(ng, value=0.0, iterations=None, weight=1.0, data_type='INT'):
 
     node = ng.nodes.new("GeometryNodeBlurAttribute")
@@ -900,6 +971,8 @@ def blur_attribute_int(ng, value=0.0, iterations=None, weight=1.0, data_type='IN
         node.inputs["Weight"].default_value = weight
     node.data_type = data_type
 
+
+    return node
 
 def blur_attribute_vector(ng, value=0.0, iterations=None, weight=1.0, data_type='VECTOR_FLOAT'):
 
@@ -920,6 +993,8 @@ def blur_attribute_vector(ng, value=0.0, iterations=None, weight=1.0, data_type=
     node.data_type = data_type
 
 
+    return node
+
 def bound_box(ng, geometry=None, ):
 
     node = ng.nodes.new("GeometryNodeBoundBox")
@@ -928,6 +1003,8 @@ def bound_box(ng, geometry=None, ):
     else:
         node.inputs["Geometry"].default_value = geometry
 
+
+    return node
 
 def capture_attribute_float(ng, geometry=None, value=[0.0, 0.0, 0.0], domain='POINT', data_type='FLOAT'):
 
@@ -944,6 +1021,8 @@ def capture_attribute_float(ng, geometry=None, value=[0.0, 0.0, 0.0], domain='PO
     node.data_type = data_type
 
 
+    return node
+
 def capture_attribute_int(ng, geometry=None, value=[0.0, 0.0, 0.0], domain='POINT', data_type='INT'):
 
     node = ng.nodes.new("GeometryNodeCaptureAttribute")
@@ -958,6 +1037,8 @@ def capture_attribute_int(ng, geometry=None, value=[0.0, 0.0, 0.0], domain='POIN
     node.domain = domain
     node.data_type = data_type
 
+
+    return node
 
 def capture_attribute_vector(ng, geometry=None, value=[0.0, 0.0, 0.0], domain='POINT', data_type='VECTOR_FLOAT'):
 
@@ -974,6 +1055,8 @@ def capture_attribute_vector(ng, geometry=None, value=[0.0, 0.0, 0.0], domain='P
     node.data_type = data_type
 
 
+    return node
+
 def capture_attribute_color(ng, geometry=None, value=[0.0, 0.0, 0.0], domain='POINT', data_type='COLOR'):
 
     node = ng.nodes.new("GeometryNodeCaptureAttribute")
@@ -989,6 +1072,8 @@ def capture_attribute_color(ng, geometry=None, value=[0.0, 0.0, 0.0], domain='PO
     node.data_type = data_type
 
 
+    return node
+
 def capture_attribute_boolean(ng, geometry=None, value=[0.0, 0.0, 0.0], domain='POINT', data_type='BOOLEAN'):
 
     node = ng.nodes.new("GeometryNodeCaptureAttribute")
@@ -1003,6 +1088,8 @@ def capture_attribute_boolean(ng, geometry=None, value=[0.0, 0.0, 0.0], domain='
     node.domain = domain
     node.data_type = data_type
 
+
+    return node
 
 def collection_info(ng, collection=None, separate_children=None, reset_children=None, transform_space='ORIGINAL'):
 
@@ -1022,6 +1109,8 @@ def collection_info(ng, collection=None, separate_children=None, reset_children=
     node.transform_space = transform_space
 
 
+    return node
+
 def convex_hull(ng, geometry=None, ):
 
     node = ng.nodes.new("GeometryNodeConvexHull")
@@ -1030,6 +1119,8 @@ def convex_hull(ng, geometry=None, ):
     else:
         node.inputs["Geometry"].default_value = geometry
 
+
+    return node
 
 def corners_of_face(ng, face_index=None, weights=0.0, sort_index=None, ):
 
@@ -1048,6 +1139,8 @@ def corners_of_face(ng, face_index=None, weights=0.0, sort_index=None, ):
         node.inputs["Sort Index"].default_value = sort_index
 
 
+    return node
+
 def corners_of_vertex(ng, vertex_index=None, weights=0.0, sort_index=None, ):
 
     node = ng.nodes.new("GeometryNodeCornersOfVertex")
@@ -1064,6 +1157,8 @@ def corners_of_vertex(ng, vertex_index=None, weights=0.0, sort_index=None, ):
     else:
         node.inputs["Sort Index"].default_value = sort_index
 
+
+    return node
 
 def curve_arc(ng, resolution=None, start=[-1.0, 0.0, 0.0], middle=[0.0, 2.0, 0.0], end=[1.0, 0.0, 0.0], radius=1.0, start_angle=0.0, sweep_angle=5.497786998748779, offset_angle=0.0, connect_center=None, invert_arc=None, mode='RADIUS'):
 
@@ -1111,6 +1206,8 @@ def curve_arc(ng, resolution=None, start=[-1.0, 0.0, 0.0], middle=[0.0, 2.0, 0.0
     node.mode = mode
 
 
+    return node
+
 def curve_endpoint_selection(ng, start_size=None, end_size=None, ):
 
     node = ng.nodes.new("GeometryNodeCurveEndpointSelection")
@@ -1124,12 +1221,16 @@ def curve_endpoint_selection(ng, start_size=None, end_size=None, ):
         node.inputs["End Size"].default_value = end_size
 
 
+    return node
+
 def curve_handle_type_selection(ng, handle_type='AUTO', mode={'RIGHT', 'LEFT'}):
 
     node = ng.nodes.new("GeometryNodeCurveHandleTypeSelection")
     node.handle_type = handle_type
     node.mode = mode
 
+
+    return node
 
 def curve_length(ng, curve=None, ):
 
@@ -1140,6 +1241,8 @@ def curve_length(ng, curve=None, ):
         node.inputs["Curve"].default_value = curve
 
 
+    return node
+
 def curve_of_point(ng, point_index=None, ):
 
     node = ng.nodes.new("GeometryNodeCurveOfPoint")
@@ -1148,6 +1251,8 @@ def curve_of_point(ng, point_index=None, ):
     else:
         node.inputs["Point Index"].default_value = point_index
 
+
+    return node
 
 def curve_primitive_bezier_segment(ng, resolution=None, start=[-1.0, 0.0, 0.0], start_handle=[-0.5, 0.5, 0.0], end_handle=[0.0, 0.0, 0.0], end=[1.0, 0.0, 0.0], mode='POSITION'):
 
@@ -1175,6 +1280,8 @@ def curve_primitive_bezier_segment(ng, resolution=None, start=[-1.0, 0.0, 0.0], 
     node.mode = mode
 
 
+    return node
+
 def curve_primitive_circle(ng, resolution=None, point_1=[-1.0, 0.0, 0.0], point_2=[0.0, 1.0, 0.0], point_3=[1.0, 0.0, 0.0], radius=1.0, mode='RADIUS'):
 
     node = ng.nodes.new("GeometryNodeCurvePrimitiveCircle")
@@ -1201,6 +1308,8 @@ def curve_primitive_circle(ng, resolution=None, point_1=[-1.0, 0.0, 0.0], point_
     node.mode = mode
 
 
+    return node
+
 def curve_primitive_line(ng, start=[0.0, 0.0, 0.0], end=[0.0, 0.0, 1.0], direction=[0.0, 0.0, 1.0], length=1.0, mode='POINTS'):
 
     node = ng.nodes.new("GeometryNodeCurvePrimitiveLine")
@@ -1222,6 +1331,8 @@ def curve_primitive_line(ng, start=[0.0, 0.0, 0.0], end=[0.0, 0.0, 1.0], directi
         node.inputs["Length"].default_value = length
     node.mode = mode
 
+
+    return node
 
 def curve_primitive_quadrilateral(ng, width=2.0, height=2.0, bottom_width=4.0, top_width=2.0, offset=1.0, bottom_height=3.0, top_height=1.0, point_1=[-1.0, -1.0, 0.0], point_2=[1.0, -1.0, 0.0], point_3=[1.0, 1.0, 0.0], point_4=[-1.0, 1.0, 0.0], mode='RECTANGLE'):
 
@@ -1273,6 +1384,8 @@ def curve_primitive_quadrilateral(ng, width=2.0, height=2.0, bottom_width=4.0, t
     node.mode = mode
 
 
+    return node
+
 def curve_quadratic_bezier(ng, resolution=None, start=[-1.0, 0.0, 0.0], middle=[0.0, 2.0, 0.0], end=[1.0, 0.0, 0.0], ):
 
     node = ng.nodes.new("GeometryNodeCurveQuadraticBezier")
@@ -1294,6 +1407,8 @@ def curve_quadratic_bezier(ng, resolution=None, start=[-1.0, 0.0, 0.0], middle=[
         node.inputs["End"].default_value = end
 
 
+    return node
+
 def curve_set_handles(ng, curve=None, selection=None, handle_type='AUTO', mode={'RIGHT', 'LEFT'}):
 
     node = ng.nodes.new("GeometryNodeCurveSetHandles")
@@ -1308,6 +1423,8 @@ def curve_set_handles(ng, curve=None, selection=None, handle_type='AUTO', mode={
     node.handle_type = handle_type
     node.mode = mode
 
+
+    return node
 
 def curve_spiral(ng, resolution=None, rotations=2.0, start_radius=1.0, end_radius=2.0, height=2.0, reverse=None, ):
 
@@ -1338,6 +1455,8 @@ def curve_spiral(ng, resolution=None, rotations=2.0, start_radius=1.0, end_radiu
         node.inputs["Reverse"].default_value = reverse
 
 
+    return node
+
 def curve_spline_type(ng, curve=None, selection=None, spline_type='POLY'):
 
     node = ng.nodes.new("GeometryNodeCurveSplineType")
@@ -1351,6 +1470,8 @@ def curve_spline_type(ng, curve=None, selection=None, spline_type='POLY'):
         node.inputs["Selection"].default_value = selection
     node.spline_type = spline_type
 
+
+    return node
 
 def curve_star(ng, points=None, inner_radius=1.0, outer_radius=2.0, twist=0.0, ):
 
@@ -1373,6 +1494,8 @@ def curve_star(ng, points=None, inner_radius=1.0, outer_radius=2.0, twist=0.0, )
         node.inputs["Twist"].default_value = twist
 
 
+    return node
+
 def curve_to_mesh(ng, curve=None, profile_curve=None, fill_caps=None, ):
 
     node = ng.nodes.new("GeometryNodeCurveToMesh")
@@ -1389,6 +1512,8 @@ def curve_to_mesh(ng, curve=None, profile_curve=None, fill_caps=None, ):
     else:
         node.inputs["Fill Caps"].default_value = fill_caps
 
+
+    return node
 
 def curve_to_points(ng, curve=None, count=None, length=0.10000000149011612, mode='COUNT'):
 
@@ -1408,6 +1533,8 @@ def curve_to_points(ng, curve=None, count=None, length=0.10000000149011612, mode
     node.mode = mode
 
 
+    return node
+
 def deform_curves_on_surface(ng, curves=None, ):
 
     node = ng.nodes.new("GeometryNodeDeformCurvesOnSurface")
@@ -1416,6 +1543,8 @@ def deform_curves_on_surface(ng, curves=None, ):
     else:
         node.inputs["Curves"].default_value = curves
 
+
+    return node
 
 def delete_geometry(ng, geometry=None, selection=None, mode='ALL', domain='POINT'):
 
@@ -1431,6 +1560,8 @@ def delete_geometry(ng, geometry=None, selection=None, mode='ALL', domain='POINT
     node.mode = mode
     node.domain = domain
 
+
+    return node
 
 def distribute_points_in_volume(ng, volume=None, density=1.0, seed=None, spacing=[0.30000001192092896, 0.30000001192092896, 0.30000001192092896], threshold=0.10000000149011612, mode='DENSITY_RANDOM'):
 
@@ -1457,6 +1588,8 @@ def distribute_points_in_volume(ng, volume=None, density=1.0, seed=None, spacing
         node.inputs["Threshold"].default_value = threshold
     node.mode = mode
 
+
+    return node
 
 def distribute_points_on_faces(ng, mesh=None, selection=None, distance_min=0.0, density_max=10.0, density=10.0, density_factor=1.0, seed=None, use_legacy_normal=False, distribute_method='RANDOM'):
 
@@ -1493,6 +1626,8 @@ def distribute_points_on_faces(ng, mesh=None, selection=None, distance_min=0.0, 
     node.distribute_method = distribute_method
 
 
+    return node
+
 def dual_mesh(ng, mesh=None, keep_boundaries=None, ):
 
     node = ng.nodes.new("GeometryNodeDualMesh")
@@ -1505,6 +1640,8 @@ def dual_mesh(ng, mesh=None, keep_boundaries=None, ):
     else:
         node.inputs["Keep Boundaries"].default_value = keep_boundaries
 
+
+    return node
 
 def duplicate_elements(ng, geometry=None, selection=None, amount=None, domain='POINT'):
 
@@ -1524,6 +1661,8 @@ def duplicate_elements(ng, geometry=None, selection=None, amount=None, domain='P
     node.domain = domain
 
 
+    return node
+
 def edge_paths_to_curves(ng, mesh=None, start_vertices=None, next_vertex_index=None, ):
 
     node = ng.nodes.new("GeometryNodeEdgePathsToCurves")
@@ -1541,6 +1680,8 @@ def edge_paths_to_curves(ng, mesh=None, start_vertices=None, next_vertex_index=N
         node.inputs["Next Vertex Index"].default_value = next_vertex_index
 
 
+    return node
+
 def edge_paths_to_selection(ng, start_vertices=None, next_vertex_index=None, ):
 
     node = ng.nodes.new("GeometryNodeEdgePathsToSelection")
@@ -1554,6 +1695,8 @@ def edge_paths_to_selection(ng, start_vertices=None, next_vertex_index=None, ):
         node.inputs["Next Vertex Index"].default_value = next_vertex_index
 
 
+    return node
+
 def edges_of_corner(ng, corner_index=None, ):
 
     node = ng.nodes.new("GeometryNodeEdgesOfCorner")
@@ -1562,6 +1705,8 @@ def edges_of_corner(ng, corner_index=None, ):
     else:
         node.inputs["Corner Index"].default_value = corner_index
 
+
+    return node
 
 def edges_of_vertex(ng, vertex_index=None, weights=0.0, sort_index=None, ):
 
@@ -1580,6 +1725,8 @@ def edges_of_vertex(ng, vertex_index=None, weights=0.0, sort_index=None, ):
         node.inputs["Sort Index"].default_value = sort_index
 
 
+    return node
+
 def edges_to_face_groups(ng, boundary_edges=None, ):
 
     node = ng.nodes.new("GeometryNodeEdgesToFaceGroups")
@@ -1588,6 +1735,8 @@ def edges_to_face_groups(ng, boundary_edges=None, ):
     else:
         node.inputs["Boundary Edges"].default_value = boundary_edges
 
+
+    return node
 
 def extrude_mesh(ng, mesh=None, selection=None, offset=[0.0, 0.0, 0.0], offset_scale=1.0, individual=None, mode='FACES'):
 
@@ -1615,6 +1764,8 @@ def extrude_mesh(ng, mesh=None, selection=None, offset=[0.0, 0.0, 0.0], offset_s
     node.mode = mode
 
 
+    return node
+
 def face_of_corner(ng, corner_index=None, ):
 
     node = ng.nodes.new("GeometryNodeFaceOfCorner")
@@ -1623,6 +1774,8 @@ def face_of_corner(ng, corner_index=None, ):
     else:
         node.inputs["Corner Index"].default_value = corner_index
 
+
+    return node
 
 def field_at_index_float(ng, index=None, value=0.0, domain='POINT', data_type='FLOAT'):
 
@@ -1639,6 +1792,8 @@ def field_at_index_float(ng, index=None, value=0.0, domain='POINT', data_type='F
     node.data_type = data_type
 
 
+    return node
+
 def field_at_index_int(ng, index=None, value=0.0, domain='POINT', data_type='INT'):
 
     node = ng.nodes.new("GeometryNodeFieldAtIndex")
@@ -1653,6 +1808,8 @@ def field_at_index_int(ng, index=None, value=0.0, domain='POINT', data_type='INT
     node.domain = domain
     node.data_type = data_type
 
+
+    return node
 
 def field_at_index_vector(ng, index=None, value=0.0, domain='POINT', data_type='VECTOR_FLOAT'):
 
@@ -1669,6 +1826,8 @@ def field_at_index_vector(ng, index=None, value=0.0, domain='POINT', data_type='
     node.data_type = data_type
 
 
+    return node
+
 def field_at_index_color(ng, index=None, value=0.0, domain='POINT', data_type='COLOR'):
 
     node = ng.nodes.new("GeometryNodeFieldAtIndex")
@@ -1683,6 +1842,8 @@ def field_at_index_color(ng, index=None, value=0.0, domain='POINT', data_type='C
     node.domain = domain
     node.data_type = data_type
 
+
+    return node
 
 def field_at_index_boolean(ng, index=None, value=0.0, domain='POINT', data_type='BOOLEAN'):
 
@@ -1699,6 +1860,8 @@ def field_at_index_boolean(ng, index=None, value=0.0, domain='POINT', data_type=
     node.data_type = data_type
 
 
+    return node
+
 def field_on_domain_float(ng, value=0.0, domain='POINT', data_type='FLOAT'):
 
     node = ng.nodes.new("GeometryNodeFieldOnDomain")
@@ -1709,6 +1872,8 @@ def field_on_domain_float(ng, value=0.0, domain='POINT', data_type='FLOAT'):
     node.domain = domain
     node.data_type = data_type
 
+
+    return node
 
 def field_on_domain_int(ng, value=0.0, domain='POINT', data_type='INT'):
 
@@ -1721,6 +1886,8 @@ def field_on_domain_int(ng, value=0.0, domain='POINT', data_type='INT'):
     node.data_type = data_type
 
 
+    return node
+
 def field_on_domain_vector(ng, value=0.0, domain='POINT', data_type='VECTOR_FLOAT'):
 
     node = ng.nodes.new("GeometryNodeFieldOnDomain")
@@ -1731,6 +1898,8 @@ def field_on_domain_vector(ng, value=0.0, domain='POINT', data_type='VECTOR_FLOA
     node.domain = domain
     node.data_type = data_type
 
+
+    return node
 
 def field_on_domain_color(ng, value=0.0, domain='POINT', data_type='COLOR'):
 
@@ -1743,6 +1912,8 @@ def field_on_domain_color(ng, value=0.0, domain='POINT', data_type='COLOR'):
     node.data_type = data_type
 
 
+    return node
+
 def field_on_domain_boolean(ng, value=0.0, domain='POINT', data_type='BOOLEAN'):
 
     node = ng.nodes.new("GeometryNodeFieldOnDomain")
@@ -1754,6 +1925,8 @@ def field_on_domain_boolean(ng, value=0.0, domain='POINT', data_type='BOOLEAN'):
     node.data_type = data_type
 
 
+    return node
+
 def fill_curve(ng, curve=None, mode='TRIANGLES'):
 
     node = ng.nodes.new("GeometryNodeFillCurve")
@@ -1763,6 +1936,8 @@ def fill_curve(ng, curve=None, mode='TRIANGLES'):
         node.inputs["Curve"].default_value = curve
     node.mode = mode
 
+
+    return node
 
 def fillet_curve(ng, curve=None, count=None, radius=0.25, limit_radius=None, mode='BEZIER'):
 
@@ -1786,6 +1961,8 @@ def fillet_curve(ng, curve=None, count=None, radius=0.25, limit_radius=None, mod
     node.mode = mode
 
 
+    return node
+
 def flip_faces(ng, mesh=None, selection=None, ):
 
     node = ng.nodes.new("GeometryNodeFlipFaces")
@@ -1799,6 +1976,8 @@ def flip_faces(ng, mesh=None, selection=None, ):
         node.inputs["Selection"].default_value = selection
 
 
+    return node
+
 def geometry_to_instance(ng, geometry=None, ):
 
     node = ng.nodes.new("GeometryNodeGeometryToInstance")
@@ -1808,11 +1987,15 @@ def geometry_to_instance(ng, geometry=None, ):
         node.inputs["Geometry"].default_value = geometry
 
 
+    return node
+
 def group(ng, node_tree=None):
 
     node = ng.nodes.new("GeometryNodeGroup")
     node.node_tree = node_tree
 
+
+    return node
 
 def image_info(ng, image=None, frame=None, ):
 
@@ -1826,6 +2009,8 @@ def image_info(ng, image=None, frame=None, ):
     else:
         node.inputs["Frame"].default_value = frame
 
+
+    return node
 
 def image_texture(ng, image=None, vector=[0.0, 0.0, 0.0], frame=None, interpolation='Linear', extension='REPEAT'):
 
@@ -1846,6 +2031,8 @@ def image_texture(ng, image=None, vector=[0.0, 0.0, 0.0], frame=None, interpolat
     node.extension = extension
 
 
+    return node
+
 def input_curve_handle_positions(ng, relative=None, ):
 
     node = ng.nodes.new("GeometryNodeInputCurveHandlePositions")
@@ -1855,15 +2042,21 @@ def input_curve_handle_positions(ng, relative=None, ):
         node.inputs["Relative"].default_value = relative
 
 
+    return node
+
 def input_curve_tilt(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputCurveTilt")
 
 
+    return node
+
 def input_id(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputID")
 
+
+    return node
 
 def input_image(ng, image=None):
 
@@ -1871,20 +2064,28 @@ def input_image(ng, image=None):
     node.image = image
 
 
+    return node
+
 def input_index(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputIndex")
 
+
+    return node
 
 def input_instance_rotation(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputInstanceRotation")
 
 
+    return node
+
 def input_instance_scale(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputInstanceScale")
 
+
+    return node
 
 def input_material(ng, material=None):
 
@@ -1892,30 +2093,42 @@ def input_material(ng, material=None):
     node.material = material
 
 
+    return node
+
 def input_material_index(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputMaterialIndex")
 
+
+    return node
 
 def input_mesh_edge_angle(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputMeshEdgeAngle")
 
 
+    return node
+
 def input_mesh_edge_neighbors(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputMeshEdgeNeighbors")
 
+
+    return node
 
 def input_mesh_edge_vertices(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputMeshEdgeVertices")
 
 
+    return node
+
 def input_mesh_face_area(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputMeshFaceArea")
 
+
+    return node
 
 def input_mesh_face_is_planar(ng, threshold=0.009999999776482582, ):
 
@@ -1926,20 +2139,28 @@ def input_mesh_face_is_planar(ng, threshold=0.009999999776482582, ):
         node.inputs["Threshold"].default_value = threshold
 
 
+    return node
+
 def input_mesh_face_neighbors(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputMeshFaceNeighbors")
 
+
+    return node
 
 def input_mesh_island(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputMeshIsland")
 
 
+    return node
+
 def input_mesh_vertex_neighbors(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputMeshVertexNeighbors")
 
+
+    return node
 
 def input_named_attribute(ng, name=None, data_type='FLOAT'):
 
@@ -1951,30 +2172,42 @@ def input_named_attribute(ng, name=None, data_type='FLOAT'):
     node.data_type = data_type
 
 
+    return node
+
 def input_normal(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputNormal")
 
+
+    return node
 
 def input_position(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputPosition")
 
 
+    return node
+
 def input_radius(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputRadius")
 
+
+    return node
 
 def input_scene_time(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputSceneTime")
 
 
+    return node
+
 def input_shade_smooth(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputShadeSmooth")
 
+
+    return node
 
 def input_shortest_edge_paths(ng, end_vertex=None, edge_cost=1.0, ):
 
@@ -1989,20 +2222,28 @@ def input_shortest_edge_paths(ng, end_vertex=None, edge_cost=1.0, ):
         node.inputs["Edge Cost"].default_value = edge_cost
 
 
+    return node
+
 def input_spline_cyclic(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputSplineCyclic")
 
+
+    return node
 
 def input_spline_resolution(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputSplineResolution")
 
 
+    return node
+
 def input_tangent(ng, ):
 
     node = ng.nodes.new("GeometryNodeInputTangent")
 
+
+    return node
 
 def instance_on_points(ng, points=None, selection=None, instance=None, pick_instance=None, instance_index=None, rotation=[0.0, 0.0, 0.0], scale=[1.0, 1.0, 1.0], ):
 
@@ -2037,6 +2278,8 @@ def instance_on_points(ng, points=None, selection=None, instance=None, pick_inst
         node.inputs["Scale"].default_value = scale
 
 
+    return node
+
 def instances_to_points(ng, instances=None, selection=None, position=[0.0, 0.0, 0.0], radius=0.05000000074505806, ):
 
     node = ng.nodes.new("GeometryNodeInstancesToPoints")
@@ -2057,6 +2300,8 @@ def instances_to_points(ng, instances=None, selection=None, position=[0.0, 0.0, 
     else:
         node.inputs["Radius"].default_value = radius
 
+
+    return node
 
 def interpolate_curves(ng, guide_curves=None, guide_up=[0.0, 0.0, 0.0], guide_group_id=None, points=None, point_up=[0.0, 0.0, 0.0], point_group_id=None, max_neighbors=None, ):
 
@@ -2091,10 +2336,14 @@ def interpolate_curves(ng, guide_curves=None, guide_up=[0.0, 0.0, 0.0], guide_gr
         node.inputs["Max Neighbors"].default_value = max_neighbors
 
 
+    return node
+
 def is_viewport(ng, ):
 
     node = ng.nodes.new("GeometryNodeIsViewport")
 
+
+    return node
 
 def join_geometry(ng, geometry=None, ):
 
@@ -2105,6 +2354,8 @@ def join_geometry(ng, geometry=None, ):
         node.inputs["Geometry"].default_value = geometry
 
 
+    return node
+
 def material_selection(ng, material=None, ):
 
     node = ng.nodes.new("GeometryNodeMaterialSelection")
@@ -2113,6 +2364,8 @@ def material_selection(ng, material=None, ):
     else:
         node.inputs["Material"].default_value = material
 
+
+    return node
 
 def merge_by_distance(ng, geometry=None, selection=None, distance=0.0010000000474974513, mode='ALL'):
 
@@ -2131,6 +2384,8 @@ def merge_by_distance(ng, geometry=None, selection=None, distance=0.001000000047
         node.inputs["Distance"].default_value = distance
     node.mode = mode
 
+
+    return node
 
 def mesh_boolean(ng, mesh_1=None, mesh_2=None, self_intersection=None, hole_tolerant=None, operation='DIFFERENCE'):
 
@@ -2154,6 +2409,8 @@ def mesh_boolean(ng, mesh_1=None, mesh_2=None, self_intersection=None, hole_tole
     node.operation = operation
 
 
+    return node
+
 def mesh_circle(ng, vertices=None, radius=1.0, fill_type='NONE'):
 
     node = ng.nodes.new("GeometryNodeMeshCircle")
@@ -2167,6 +2424,8 @@ def mesh_circle(ng, vertices=None, radius=1.0, fill_type='NONE'):
         node.inputs["Radius"].default_value = radius
     node.fill_type = fill_type
 
+
+    return node
 
 def mesh_cone(ng, vertices=None, side_segments=None, fill_segments=None, radius_top=0.0, radius_bottom=1.0, depth=2.0, fill_type='NGON'):
 
@@ -2198,6 +2457,8 @@ def mesh_cone(ng, vertices=None, side_segments=None, fill_segments=None, radius_
     node.fill_type = fill_type
 
 
+    return node
+
 def mesh_cube(ng, size=[1.0, 1.0, 1.0], vertices_x=2, vertices_y=2, vertices_z=2, ):
     node = ng.nodes.new("GeometryNodeMeshCube")
     if isinstance(size, bpy.types.NodeSocket):
@@ -2217,6 +2478,8 @@ def mesh_cube(ng, size=[1.0, 1.0, 1.0], vertices_x=2, vertices_y=2, vertices_z=2
     else:
         node.inputs["Vertices Z"].default_value = vertices_z
 
+
+    return node
 
 def mesh_cylinder(ng, vertices=None, side_segments=None, fill_segments=None, radius=1.0, depth=2.0, fill_type='NGON'):
 
@@ -2244,6 +2507,8 @@ def mesh_cylinder(ng, vertices=None, side_segments=None, fill_segments=None, rad
     node.fill_type = fill_type
 
 
+    return node
+
 def mesh_face_set_boundaries(ng, face_group_id=None, ):
 
     node = ng.nodes.new("GeometryNodeMeshFaceSetBoundaries")
@@ -2252,6 +2517,8 @@ def mesh_face_set_boundaries(ng, face_group_id=None, ):
     else:
         node.inputs["Face Group ID"].default_value = face_group_id
 
+
+    return node
 
 def mesh_grid(ng, size_x=1.0, size_y=1.0, vertices_x=None, vertices_y=None, ):
 
@@ -2274,6 +2541,8 @@ def mesh_grid(ng, size_x=1.0, size_y=1.0, vertices_x=None, vertices_y=None, ):
         node.inputs["Vertices Y"].default_value = vertices_y
 
 
+    return node
+
 def mesh_ico_sphere(ng, radius=1.0, subdivisions=None, ):
 
     node = ng.nodes.new("GeometryNodeMeshIcoSphere")
@@ -2286,6 +2555,8 @@ def mesh_ico_sphere(ng, radius=1.0, subdivisions=None, ):
     else:
         node.inputs["Subdivisions"].default_value = subdivisions
 
+
+    return node
 
 def mesh_line(ng, count=None, resolution=1.0, start_location=[0.0, 0.0, 0.0], offset=[0.0, 0.0, 1.0], mode='OFFSET', count_mode='TOTAL'):
 
@@ -2310,6 +2581,8 @@ def mesh_line(ng, count=None, resolution=1.0, start_location=[0.0, 0.0, 0.0], of
     node.count_mode = count_mode
 
 
+    return node
+
 def mesh_to_curve(ng, mesh=None, selection=None, ):
 
     node = ng.nodes.new("GeometryNodeMeshToCurve")
@@ -2322,6 +2595,8 @@ def mesh_to_curve(ng, mesh=None, selection=None, ):
     else:
         node.inputs["Selection"].default_value = selection
 
+
+    return node
 
 def mesh_to_points(ng, mesh=None, selection=None, position=[0.0, 0.0, 0.0], radius=0.05000000074505806, mode='VERTICES'):
 
@@ -2344,6 +2619,8 @@ def mesh_to_points(ng, mesh=None, selection=None, position=[0.0, 0.0, 0.0], radi
         node.inputs["Radius"].default_value = radius
     node.mode = mode
 
+
+    return node
 
 def mesh_to_volume(ng, mesh=None, density=1.0, voxel_size=0.30000001192092896, voxel_amount=64.0, exterior_band_width=0.10000000149011612, interior_band_width=0.0, fill_volume=None, resolution_mode='VOXEL_AMOUNT'):
 
@@ -2379,6 +2656,8 @@ def mesh_to_volume(ng, mesh=None, density=1.0, voxel_size=0.30000001192092896, v
     node.resolution_mode = resolution_mode
 
 
+    return node
+
 def mesh_uv_sphere(ng, segments=None, rings=None, radius=1.0, ):
 
     node = ng.nodes.new("GeometryNodeMeshUVSphere")
@@ -2396,6 +2675,8 @@ def mesh_uv_sphere(ng, segments=None, rings=None, radius=1.0, ):
         node.inputs["Radius"].default_value = radius
 
 
+    return node
+
 def object_info(ng, object=None, as_instance=None, transform_space='ORIGINAL'):
 
     node = ng.nodes.new("GeometryNodeObjectInfo")
@@ -2410,6 +2691,8 @@ def object_info(ng, object=None, as_instance=None, transform_space='ORIGINAL'):
     node.transform_space = transform_space
 
 
+    return node
+
 def offset_corner_in_face(ng, corner_index=None, offset=None, ):
 
     node = ng.nodes.new("GeometryNodeOffsetCornerInFace")
@@ -2423,6 +2706,8 @@ def offset_corner_in_face(ng, corner_index=None, offset=None, ):
         node.inputs["Offset"].default_value = offset
 
 
+    return node
+
 def offset_point_in_curve(ng, point_index=None, offset=None, ):
 
     node = ng.nodes.new("GeometryNodeOffsetPointInCurve")
@@ -2435,6 +2720,8 @@ def offset_point_in_curve(ng, point_index=None, offset=None, ):
     else:
         node.inputs["Offset"].default_value = offset
 
+
+    return node
 
 def points(ng, count=None, position=[0.0, 0.0, 0.0], radius=0.10000000149011612, ):
 
@@ -2453,6 +2740,8 @@ def points(ng, count=None, position=[0.0, 0.0, 0.0], radius=0.10000000149011612,
         node.inputs["Radius"].default_value = radius
 
 
+    return node
+
 def points_of_curve(ng, curve_index=None, weights=0.0, sort_index=None, ):
 
     node = ng.nodes.new("GeometryNodePointsOfCurve")
@@ -2470,6 +2759,8 @@ def points_of_curve(ng, curve_index=None, weights=0.0, sort_index=None, ):
         node.inputs["Sort Index"].default_value = sort_index
 
 
+    return node
+
 def points_to_vertices(ng, points=None, selection=None, ):
 
     node = ng.nodes.new("GeometryNodePointsToVertices")
@@ -2482,6 +2773,8 @@ def points_to_vertices(ng, points=None, selection=None, ):
     else:
         node.inputs["Selection"].default_value = selection
 
+
+    return node
 
 def points_to_volume(ng, points=None, density=1.0, voxel_size=0.30000001192092896, voxel_amount=64.0, radius=0.5, resolution_mode='VOXEL_AMOUNT'):
 
@@ -2509,6 +2802,8 @@ def points_to_volume(ng, points=None, density=1.0, voxel_size=0.3000000119209289
     node.resolution_mode = resolution_mode
 
 
+    return node
+
 def proximity(ng, target=None, source_position=[0.0, 0.0, 0.0], target_element='FACES'):
 
     node = ng.nodes.new("GeometryNodeProximity")
@@ -2522,6 +2817,8 @@ def proximity(ng, target=None, source_position=[0.0, 0.0, 0.0], target_element='
         node.inputs["Source Position"].default_value = source_position
     node.target_element = target_element
 
+
+    return node
 
 def raycast_float(ng, target_geometry=None, attribute=[0.0, 0.0, 0.0], source_position=[0.0, 0.0, 0.0], ray_direction=[0.0, 0.0, -1.0], ray_length=100.0, mapping='INTERPOLATED', data_type='FLOAT'):
 
@@ -2550,6 +2847,8 @@ def raycast_float(ng, target_geometry=None, attribute=[0.0, 0.0, 0.0], source_po
     node.data_type = data_type
 
 
+    return node
+
 def raycast_int(ng, target_geometry=None, attribute=[0.0, 0.0, 0.0], source_position=[0.0, 0.0, 0.0], ray_direction=[0.0, 0.0, -1.0], ray_length=100.0, mapping='INTERPOLATED', data_type='INT'):
 
     node = ng.nodes.new("GeometryNodeRaycast")
@@ -2576,6 +2875,8 @@ def raycast_int(ng, target_geometry=None, attribute=[0.0, 0.0, 0.0], source_posi
     node.mapping = mapping
     node.data_type = data_type
 
+
+    return node
 
 def raycast_vector(ng, target_geometry=None, attribute=[0.0, 0.0, 0.0], source_position=[0.0, 0.0, 0.0], ray_direction=[0.0, 0.0, -1.0], ray_length=100.0, mapping='INTERPOLATED', data_type='VECTOR_FLOAT'):
 
@@ -2604,6 +2905,8 @@ def raycast_vector(ng, target_geometry=None, attribute=[0.0, 0.0, 0.0], source_p
     node.data_type = data_type
 
 
+    return node
+
 def raycast_color(ng, target_geometry=None, attribute=[0.0, 0.0, 0.0], source_position=[0.0, 0.0, 0.0], ray_direction=[0.0, 0.0, -1.0], ray_length=100.0, mapping='INTERPOLATED', data_type='COLOR'):
 
     node = ng.nodes.new("GeometryNodeRaycast")
@@ -2630,6 +2933,8 @@ def raycast_color(ng, target_geometry=None, attribute=[0.0, 0.0, 0.0], source_po
     node.mapping = mapping
     node.data_type = data_type
 
+
+    return node
 
 def raycast_boolean(ng, target_geometry=None, attribute=[0.0, 0.0, 0.0], source_position=[0.0, 0.0, 0.0], ray_direction=[0.0, 0.0, -1.0], ray_length=100.0, mapping='INTERPOLATED', data_type='BOOLEAN'):
 
@@ -2658,6 +2963,8 @@ def raycast_boolean(ng, target_geometry=None, attribute=[0.0, 0.0, 0.0], source_
     node.data_type = data_type
 
 
+    return node
+
 def realize_instances(ng, geometry=None, legacy_behavior=False):
 
     node = ng.nodes.new("GeometryNodeRealizeInstances")
@@ -2667,6 +2974,8 @@ def realize_instances(ng, geometry=None, legacy_behavior=False):
         node.inputs["Geometry"].default_value = geometry
     node.legacy_behavior = legacy_behavior
 
+
+    return node
 
 def remove_attribute(ng, geometry=None, name=None, ):
 
@@ -2680,6 +2989,8 @@ def remove_attribute(ng, geometry=None, name=None, ):
     else:
         node.inputs["Name"].default_value = name
 
+
+    return node
 
 def replace_material(ng, geometry=None, old=None, new=None, ):
 
@@ -2697,6 +3008,8 @@ def replace_material(ng, geometry=None, old=None, new=None, ):
     else:
         node.inputs["New"].default_value = new
 
+
+    return node
 
 def resample_curve(ng, curve=None, selection=None, count=None, length=0.10000000149011612, mode='COUNT'):
 
@@ -2720,6 +3033,8 @@ def resample_curve(ng, curve=None, selection=None, count=None, length=0.10000000
     node.mode = mode
 
 
+    return node
+
 def reverse_curve(ng, curve=None, selection=None, ):
 
     node = ng.nodes.new("GeometryNodeReverseCurve")
@@ -2732,6 +3047,8 @@ def reverse_curve(ng, curve=None, selection=None, ):
     else:
         node.inputs["Selection"].default_value = selection
 
+
+    return node
 
 def rotate_instances(ng, instances=None, selection=None, rotation=[0.0, 0.0, 0.0], pivot_point=[0.0, 0.0, 0.0], local_space=None, ):
 
@@ -2757,6 +3074,8 @@ def rotate_instances(ng, instances=None, selection=None, rotation=[0.0, 0.0, 0.0
     else:
         node.inputs["Local Space"].default_value = local_space
 
+
+    return node
 
 def sample_curve_float(ng, curves=None, value=0.0, factor=0.0, length=0.0, curve_index=None, mode='FACTOR', use_all_curves=False, data_type='FLOAT'):
 
@@ -2786,6 +3105,8 @@ def sample_curve_float(ng, curves=None, value=0.0, factor=0.0, length=0.0, curve
     node.data_type = data_type
 
 
+    return node
+
 def sample_curve_int(ng, curves=None, value=0.0, factor=0.0, length=0.0, curve_index=None, mode='FACTOR', use_all_curves=False, data_type='INT'):
 
     node = ng.nodes.new("GeometryNodeSampleCurve")
@@ -2813,6 +3134,8 @@ def sample_curve_int(ng, curves=None, value=0.0, factor=0.0, length=0.0, curve_i
     node.use_all_curves = use_all_curves
     node.data_type = data_type
 
+
+    return node
 
 def sample_curve_vector(ng, curves=None, value=0.0, factor=0.0, length=0.0, curve_index=None, mode='FACTOR', use_all_curves=False, data_type='VECTOR_FLOAT'):
 
@@ -2842,6 +3165,8 @@ def sample_curve_vector(ng, curves=None, value=0.0, factor=0.0, length=0.0, curv
     node.data_type = data_type
 
 
+    return node
+
 def sample_curve_color(ng, curves=None, value=0.0, factor=0.0, length=0.0, curve_index=None, mode='FACTOR', use_all_curves=False, data_type='COLOR'):
 
     node = ng.nodes.new("GeometryNodeSampleCurve")
@@ -2869,6 +3194,8 @@ def sample_curve_color(ng, curves=None, value=0.0, factor=0.0, length=0.0, curve
     node.use_all_curves = use_all_curves
     node.data_type = data_type
 
+
+    return node
 
 def sample_curve_boolean(ng, curves=None, value=0.0, factor=0.0, length=0.0, curve_index=None, mode='FACTOR', use_all_curves=False, data_type='BOOLEAN'):
 
@@ -2898,6 +3225,8 @@ def sample_curve_boolean(ng, curves=None, value=0.0, factor=0.0, length=0.0, cur
     node.data_type = data_type
 
 
+    return node
+
 def sample_index_float(ng, geometry=None, value=0.0, index=None, clamp=False, domain='POINT', data_type='FLOAT'):
 
     node = ng.nodes.new("GeometryNodeSampleIndex")
@@ -2917,6 +3246,8 @@ def sample_index_float(ng, geometry=None, value=0.0, index=None, clamp=False, do
     node.domain = domain
     node.data_type = data_type
 
+
+    return node
 
 def sample_index_int(ng, geometry=None, value=0.0, index=None, clamp=False, domain='POINT', data_type='INT'):
 
@@ -2938,6 +3269,8 @@ def sample_index_int(ng, geometry=None, value=0.0, index=None, clamp=False, doma
     node.data_type = data_type
 
 
+    return node
+
 def sample_index_vector(ng, geometry=None, value=0.0, index=None, clamp=False, domain='POINT', data_type='VECTOR_FLOAT'):
 
     node = ng.nodes.new("GeometryNodeSampleIndex")
@@ -2957,6 +3290,8 @@ def sample_index_vector(ng, geometry=None, value=0.0, index=None, clamp=False, d
     node.domain = domain
     node.data_type = data_type
 
+
+    return node
 
 def sample_index_color(ng, geometry=None, value=0.0, index=None, clamp=False, domain='POINT', data_type='COLOR'):
 
@@ -2978,6 +3313,8 @@ def sample_index_color(ng, geometry=None, value=0.0, index=None, clamp=False, do
     node.data_type = data_type
 
 
+    return node
+
 def sample_index_boolean(ng, geometry=None, value=0.0, index=None, clamp=False, domain='POINT', data_type='BOOLEAN'):
 
     node = ng.nodes.new("GeometryNodeSampleIndex")
@@ -2998,6 +3335,8 @@ def sample_index_boolean(ng, geometry=None, value=0.0, index=None, clamp=False, 
     node.data_type = data_type
 
 
+    return node
+
 def sample_nearest(ng, geometry=None, sample_position=[0.0, 0.0, 0.0], domain='POINT'):
 
     node = ng.nodes.new("GeometryNodeSampleNearest")
@@ -3011,6 +3350,8 @@ def sample_nearest(ng, geometry=None, sample_position=[0.0, 0.0, 0.0], domain='P
         node.inputs["Sample Position"].default_value = sample_position
     node.domain = domain
 
+
+    return node
 
 def sample_nearest_surface_float(ng, mesh=None, value=0.0, sample_position=[0.0, 0.0, 0.0], data_type='FLOAT'):
 
@@ -3030,6 +3371,8 @@ def sample_nearest_surface_float(ng, mesh=None, value=0.0, sample_position=[0.0,
     node.data_type = data_type
 
 
+    return node
+
 def sample_nearest_surface_int(ng, mesh=None, value=0.0, sample_position=[0.0, 0.0, 0.0], data_type='INT'):
 
     node = ng.nodes.new("GeometryNodeSampleNearestSurface")
@@ -3047,6 +3390,8 @@ def sample_nearest_surface_int(ng, mesh=None, value=0.0, sample_position=[0.0, 0
         node.inputs["Sample Position"].default_value = sample_position
     node.data_type = data_type
 
+
+    return node
 
 def sample_nearest_surface_vector(ng, mesh=None, value=0.0, sample_position=[0.0, 0.0, 0.0], data_type='VECTOR_FLOAT'):
 
@@ -3066,6 +3411,8 @@ def sample_nearest_surface_vector(ng, mesh=None, value=0.0, sample_position=[0.0
     node.data_type = data_type
 
 
+    return node
+
 def sample_nearest_surface_color(ng, mesh=None, value=0.0, sample_position=[0.0, 0.0, 0.0], data_type='COLOR'):
 
     node = ng.nodes.new("GeometryNodeSampleNearestSurface")
@@ -3084,6 +3431,8 @@ def sample_nearest_surface_color(ng, mesh=None, value=0.0, sample_position=[0.0,
     node.data_type = data_type
 
 
+    return node
+
 def sample_nearest_surface_boolean(ng, mesh=None, value=0.0, sample_position=[0.0, 0.0, 0.0], data_type='BOOLEAN'):
 
     node = ng.nodes.new("GeometryNodeSampleNearestSurface")
@@ -3101,6 +3450,8 @@ def sample_nearest_surface_boolean(ng, mesh=None, value=0.0, sample_position=[0.
         node.inputs["Sample Position"].default_value = sample_position
     node.data_type = data_type
 
+
+    return node
 
 def sample_uv_surface_float(ng, mesh=None, value=0.0, source_uv_map=[0.0, 0.0, 0.0], sample_uv=[0.0, 0.0, 0.0], data_type='FLOAT'):
 
@@ -3124,6 +3475,8 @@ def sample_uv_surface_float(ng, mesh=None, value=0.0, source_uv_map=[0.0, 0.0, 0
     node.data_type = data_type
 
 
+    return node
+
 def sample_uv_surface_int(ng, mesh=None, value=0.0, source_uv_map=[0.0, 0.0, 0.0], sample_uv=[0.0, 0.0, 0.0], data_type='INT'):
 
     node = ng.nodes.new("GeometryNodeSampleUVSurface")
@@ -3145,6 +3498,8 @@ def sample_uv_surface_int(ng, mesh=None, value=0.0, source_uv_map=[0.0, 0.0, 0.0
         node.inputs["Sample UV"].default_value = sample_uv
     node.data_type = data_type
 
+
+    return node
 
 def sample_uv_surface_vector(ng, mesh=None, value=0.0, source_uv_map=[0.0, 0.0, 0.0], sample_uv=[0.0, 0.0, 0.0], data_type='VECTOR_FLOAT'):
 
@@ -3168,6 +3523,8 @@ def sample_uv_surface_vector(ng, mesh=None, value=0.0, source_uv_map=[0.0, 0.0, 
     node.data_type = data_type
 
 
+    return node
+
 def sample_uv_surface_color(ng, mesh=None, value=0.0, source_uv_map=[0.0, 0.0, 0.0], sample_uv=[0.0, 0.0, 0.0], data_type='COLOR'):
 
     node = ng.nodes.new("GeometryNodeSampleUVSurface")
@@ -3190,6 +3547,8 @@ def sample_uv_surface_color(ng, mesh=None, value=0.0, source_uv_map=[0.0, 0.0, 0
     node.data_type = data_type
 
 
+    return node
+
 def sample_uv_surface_boolean(ng, mesh=None, value=0.0, source_uv_map=[0.0, 0.0, 0.0], sample_uv=[0.0, 0.0, 0.0], data_type='BOOLEAN'):
 
     node = ng.nodes.new("GeometryNodeSampleUVSurface")
@@ -3211,6 +3570,8 @@ def sample_uv_surface_boolean(ng, mesh=None, value=0.0, source_uv_map=[0.0, 0.0,
         node.inputs["Sample UV"].default_value = sample_uv
     node.data_type = data_type
 
+
+    return node
 
 def scale_elements(ng, geometry=None, selection=None, scale=1.0, center=[0.0, 0.0, 0.0], axis=[1.0, 0.0, 0.0], scale_mode='UNIFORM', domain='FACE'):
 
@@ -3239,6 +3600,8 @@ def scale_elements(ng, geometry=None, selection=None, scale=1.0, center=[0.0, 0.
     node.domain = domain
 
 
+    return node
+
 def scale_instances(ng, instances=None, selection=None, scale=[1.0, 1.0, 1.0], center=[0.0, 0.0, 0.0], local_space=None, ):
 
     node = ng.nodes.new("GeometryNodeScaleInstances")
@@ -3264,10 +3627,14 @@ def scale_instances(ng, instances=None, selection=None, scale=[1.0, 1.0, 1.0], c
         node.inputs["Local Space"].default_value = local_space
 
 
+    return node
+
 def self_object(ng, ):
 
     node = ng.nodes.new("GeometryNodeSelfObject")
 
+
+    return node
 
 def separate_components(ng, geometry=None, ):
 
@@ -3277,6 +3644,8 @@ def separate_components(ng, geometry=None, ):
     else:
         node.inputs["Geometry"].default_value = geometry
 
+
+    return node
 
 def separate_geometry(ng, geometry=None, selection=None, domain='POINT'):
 
@@ -3291,6 +3660,8 @@ def separate_geometry(ng, geometry=None, selection=None, domain='POINT'):
         node.inputs["Selection"].default_value = selection
     node.domain = domain
 
+
+    return node
 
 def set_curve_handle_positions(ng, curve=None, selection=None, position=[0.0, 0.0, 0.0], offset=[0.0, 0.0, 0.0], mode='LEFT'):
 
@@ -3314,6 +3685,8 @@ def set_curve_handle_positions(ng, curve=None, selection=None, position=[0.0, 0.
     node.mode = mode
 
 
+    return node
+
 def set_curve_normal(ng, curve=None, selection=None, mode='MINIMUM_TWIST'):
 
     node = ng.nodes.new("GeometryNodeSetCurveNormal")
@@ -3327,6 +3700,8 @@ def set_curve_normal(ng, curve=None, selection=None, mode='MINIMUM_TWIST'):
         node.inputs["Selection"].default_value = selection
     node.mode = mode
 
+
+    return node
 
 def set_curve_radius(ng, curve=None, selection=None, radius=0.004999999888241291, ):
 
@@ -3345,6 +3720,8 @@ def set_curve_radius(ng, curve=None, selection=None, radius=0.004999999888241291
         node.inputs["Radius"].default_value = radius
 
 
+    return node
+
 def set_curve_tilt(ng, curve=None, selection=None, tilt=0.0, ):
 
     node = ng.nodes.new("GeometryNodeSetCurveTilt")
@@ -3361,6 +3738,8 @@ def set_curve_tilt(ng, curve=None, selection=None, tilt=0.0, ):
     else:
         node.inputs["Tilt"].default_value = tilt
 
+
+    return node
 
 def set_id(ng, geometry=None, selection=None, id=None, ):
 
@@ -3379,6 +3758,8 @@ def set_id(ng, geometry=None, selection=None, id=None, ):
         node.inputs["ID"].default_value = id
 
 
+    return node
+
 def set_material(ng, geometry=None, selection=None, material=None, ):
 
     node = ng.nodes.new("GeometryNodeSetMaterial")
@@ -3395,6 +3776,8 @@ def set_material(ng, geometry=None, selection=None, material=None, ):
     else:
         node.inputs["Material"].default_value = material
 
+
+    return node
 
 def set_material_index(ng, geometry=None, selection=None, material_index=None, ):
 
@@ -3413,6 +3796,8 @@ def set_material_index(ng, geometry=None, selection=None, material_index=None, )
         node.inputs["Material Index"].default_value = material_index
 
 
+    return node
+
 def set_point_radius(ng, points=None, selection=None, radius=0.05000000074505806, ):
 
     node = ng.nodes.new("GeometryNodeSetPointRadius")
@@ -3429,6 +3814,8 @@ def set_point_radius(ng, points=None, selection=None, radius=0.05000000074505806
     else:
         node.inputs["Radius"].default_value = radius
 
+
+    return node
 
 def set_position(ng, geometry=None, selection=None, position=[0.0, 0.0, 0.0], offset=[0.0, 0.0, 0.0], ):
 
@@ -3451,6 +3838,8 @@ def set_position(ng, geometry=None, selection=None, position=[0.0, 0.0, 0.0], of
         node.inputs["Offset"].default_value = offset
 
 
+    return node
+
 def set_shade_smooth(ng, geometry=None, selection=None, shade_smooth=None, ):
 
     node = ng.nodes.new("GeometryNodeSetShadeSmooth")
@@ -3467,6 +3856,8 @@ def set_shade_smooth(ng, geometry=None, selection=None, shade_smooth=None, ):
     else:
         node.inputs["Shade Smooth"].default_value = shade_smooth
 
+
+    return node
 
 def set_spline_cyclic(ng, geometry=None, selection=None, cyclic=None, ):
 
@@ -3485,6 +3876,8 @@ def set_spline_cyclic(ng, geometry=None, selection=None, cyclic=None, ):
         node.inputs["Cyclic"].default_value = cyclic
 
 
+    return node
+
 def set_spline_resolution(ng, geometry=None, selection=None, resolution=None, ):
 
     node = ng.nodes.new("GeometryNodeSetSplineResolution")
@@ -3502,15 +3895,21 @@ def set_spline_resolution(ng, geometry=None, selection=None, resolution=None, ):
         node.inputs["Resolution"].default_value = resolution
 
 
+    return node
+
 def spline_length(ng, ):
 
     node = ng.nodes.new("GeometryNodeSplineLength")
 
 
+    return node
+
 def spline_parameter(ng, ):
 
     node = ng.nodes.new("GeometryNodeSplineParameter")
 
+
+    return node
 
 def split_edges(ng, mesh=None, selection=None, ):
 
@@ -3524,6 +3923,8 @@ def split_edges(ng, mesh=None, selection=None, ):
     else:
         node.inputs["Selection"].default_value = selection
 
+
+    return node
 
 def store_named_attribute_float(ng, geometry=None, selection=None, name=None, value=[0.0, 0.0, 0.0], domain='POINT', data_type='FLOAT'):
 
@@ -3548,6 +3949,8 @@ def store_named_attribute_float(ng, geometry=None, selection=None, name=None, va
     node.data_type = data_type
 
 
+    return node
+
 def store_named_attribute_int(ng, geometry=None, selection=None, name=None, value=[0.0, 0.0, 0.0], domain='POINT', data_type='INT'):
 
     node = ng.nodes.new("GeometryNodeStoreNamedAttribute")
@@ -3570,6 +3973,8 @@ def store_named_attribute_int(ng, geometry=None, selection=None, name=None, valu
     node.domain = domain
     node.data_type = data_type
 
+
+    return node
 
 def store_named_attribute_vector(ng, geometry=None, selection=None, name=None, value=[0.0, 0.0, 0.0], domain='POINT', data_type='VECTOR_FLOAT'):
 
@@ -3594,6 +3999,8 @@ def store_named_attribute_vector(ng, geometry=None, selection=None, name=None, v
     node.data_type = data_type
 
 
+    return node
+
 def store_named_attribute_color(ng, geometry=None, selection=None, name=None, value=[0.0, 0.0, 0.0], domain='POINT', data_type='COLOR'):
 
     node = ng.nodes.new("GeometryNodeStoreNamedAttribute")
@@ -3616,6 +4023,8 @@ def store_named_attribute_color(ng, geometry=None, selection=None, name=None, va
     node.domain = domain
     node.data_type = data_type
 
+
+    return node
 
 def store_named_attribute_boolean(ng, geometry=None, selection=None, name=None, value=[0.0, 0.0, 0.0], domain='POINT', data_type='BOOLEAN'):
 
@@ -3640,6 +4049,8 @@ def store_named_attribute_boolean(ng, geometry=None, selection=None, name=None, 
     node.data_type = data_type
 
 
+    return node
+
 def string_join(ng, delimiter=None, strings=None):
 
     node = ng.nodes.new("GeometryNodeStringJoin")
@@ -3652,6 +4063,8 @@ def string_join(ng, delimiter=None, strings=None):
     else:
         node.inputs["Strings"].default_value = strings
 
+
+    return node
 
 def string_to_curves(ng, string,  size=1.0, character_spacing=1.0, word_spacing=1.0, line_spacing=1.0, text_box_width=0.0, text_box_height=0.0, align_y='TOP_BASELINE', pivot_mode='BOTTOM_LEFT', overflow='OVERFLOW', font=None, align_x='LEFT'):
 
@@ -3691,6 +4104,8 @@ def string_to_curves(ng, string,  size=1.0, character_spacing=1.0, word_spacing=
     node.align_x = align_x
 
 
+    return node
+
 def subdivide_curve(ng, curve=None, cuts=None):
 
     node = ng.nodes.new("GeometryNodeSubdivideCurve")
@@ -3704,6 +4119,8 @@ def subdivide_curve(ng, curve=None, cuts=None):
         node.inputs["Cuts"].default_value = cuts
 
 
+    return node
+
 def subdivide_mesh(ng, mesh=None, level=None):
 
     node = ng.nodes.new("GeometryNodeSubdivideMesh")
@@ -3716,6 +4133,8 @@ def subdivide_mesh(ng, mesh=None, level=None):
     else:
         node.inputs["Level"].default_value = level
 
+
+    return node
 
 def subdivision_surface(ng, mesh=None, level=None, edge_crease=0.0, vertex_crease=0.0, uv_smooth='PRESERVE_BOUNDARIES', boundary_smooth='ALL'):
 
@@ -3740,6 +4159,8 @@ def subdivision_surface(ng, mesh=None, level=None, edge_crease=0.0, vertex_creas
     node.boundary_smooth = boundary_smooth
 
 
+    return node
+
 def switch_float(ng, switch=False, false=0.0, true=0.0, input_type='FLOAT'):
 
     node = ng.nodes.new("GeometryNodeSwitch")
@@ -3757,6 +4178,8 @@ def switch_float(ng, switch=False, false=0.0, true=0.0, input_type='FLOAT'):
         node.inputs[3] = true
     node.input_type = input_type
 
+
+    return node
 
 def switch_int(ng, switch=False, false=0.0, true=0.0, input_type='INT'):
 
@@ -3776,6 +4199,8 @@ def switch_int(ng, switch=False, false=0.0, true=0.0, input_type='INT'):
     node.input_type = input_type
 
 
+    return node
+
 def switch_boolean(ng, switch=False, false=0.0, true=0.0, input_type='BOOLEAN'):
 
     node = ng.nodes.new("GeometryNodeSwitch")
@@ -3793,6 +4218,8 @@ def switch_boolean(ng, switch=False, false=0.0, true=0.0, input_type='BOOLEAN'):
         node.inputs[7] = true
     node.input_type = input_type
 
+
+    return node
 
 def switch_vector(ng, switch=False, false=0.0, true=0.0, input_type='VECTOR'):
 
@@ -3812,6 +4239,8 @@ def switch_vector(ng, switch=False, false=0.0, true=0.0, input_type='VECTOR'):
     node.input_type = input_type
 
 
+    return node
+
 def switch_color(ng, switch=False, false=0.0, true=0.0, input_type='RGBA'):
 
     node = ng.nodes.new("GeometryNodeSwitch")
@@ -3829,6 +4258,8 @@ def switch_color(ng, switch=False, false=0.0, true=0.0, input_type='RGBA'):
         node.inputs[11] = true
     node.input_type = input_type
 
+
+    return node
 
 def switch_string(ng, switch=False, false=0.0, true=0.0, input_type='STRING'):
 
@@ -3848,6 +4279,8 @@ def switch_string(ng, switch=False, false=0.0, true=0.0, input_type='STRING'):
     node.input_type = input_type
 
 
+    return node
+
 def switch_geometry(ng, switch=False, false=0.0, true=0.0, input_type='GEOMETRY'):
 
     node = ng.nodes.new("GeometryNodeSwitch")
@@ -3865,6 +4298,8 @@ def switch_geometry(ng, switch=False, false=0.0, true=0.0, input_type='GEOMETRY'
         node.inputs[15] = true
     node.input_type = input_type
 
+
+    return node
 
 def switch_object(ng, switch=False, false=0.0, true=0.0, input_type='OBJECT'):
 
@@ -3884,6 +4319,8 @@ def switch_object(ng, switch=False, false=0.0, true=0.0, input_type='OBJECT'):
     node.input_type = input_type
 
 
+    return node
+
 def switch_collection(ng, switch=False, false=0.0, true=0.0, input_type='COLLECTION'):
 
     node = ng.nodes.new("GeometryNodeSwitch")
@@ -3901,6 +4338,8 @@ def switch_collection(ng, switch=False, false=0.0, true=0.0, input_type='COLLECT
         node.inputs[19] = true
     node.input_type = input_type
 
+
+    return node
 
 def switch_texture(ng, switch=False, false=0.0, true=0.0, input_type='TEXTURE'):
 
@@ -3920,6 +4359,8 @@ def switch_texture(ng, switch=False, false=0.0, true=0.0, input_type='TEXTURE'):
     node.input_type = input_type
 
 
+    return node
+
 def switch_material(ng, switch=False, false=0.0, true=0.0, input_type='MATERIAL'):
 
     node = ng.nodes.new("GeometryNodeSwitch")
@@ -3938,6 +4379,8 @@ def switch_material(ng, switch=False, false=0.0, true=0.0, input_type='MATERIAL'
     node.input_type = input_type
 
 
+    return node
+
 def switch_image(ng, switch=False, false=0.0, true=0.0, input_type='IMAGE'):
 
     node = ng.nodes.new("GeometryNodeSwitch")
@@ -3955,6 +4398,8 @@ def switch_image(ng, switch=False, false=0.0, true=0.0, input_type='IMAGE'):
         node.inputs[25] = true
     node.input_type = input_type
 
+
+    return node
 
 def transform(ng, geometry=None, translation=[0.0, 0.0, 0.0], rotation=[0.0, 0.0, 0.0], scale=[1.0, 1.0, 1.0], ):
 
@@ -3977,6 +4422,8 @@ def transform(ng, geometry=None, translation=[0.0, 0.0, 0.0], rotation=[0.0, 0.0
         node.inputs["Scale"].default_value = scale
 
 
+    return node
+
 def translate_instances(ng, instances=None, selection=None, translation=[0.0, 0.0, 0.0], local_space=None, ):
 
     node = ng.nodes.new("GeometryNodeTranslateInstances")
@@ -3998,6 +4445,8 @@ def translate_instances(ng, instances=None, selection=None, translation=[0.0, 0.
         node.inputs["Local Space"].default_value = local_space
 
 
+    return node
+
 def triangulate(ng, mesh=None, selection=None, minimum_vertices=None, ngon_method='BEAUTY', quad_method='SHORTEST_DIAGONAL'):
 
     node = ng.nodes.new("GeometryNodeTriangulate")
@@ -4016,6 +4465,8 @@ def triangulate(ng, mesh=None, selection=None, minimum_vertices=None, ngon_metho
     node.ngon_method = ngon_method
     node.quad_method = quad_method
 
+
+    return node
 
 def trim_curve(ng, curve=None, selection=None, start=0.0, end=1.0, mode='FACTOR'):
 
@@ -4043,6 +4494,8 @@ def trim_curve(ng, curve=None, selection=None, start=0.0, end=1.0, mode='FACTOR'
     node.mode = mode
 
 
+    return node
+
 def uv_pack_islands(ng, uv=[0.0, 0.0, 0.0], selection=None, margin=0.0010000000474974513, rotate=None, ):
 
     node = ng.nodes.new("GeometryNodeUVPackIslands")
@@ -4063,6 +4516,8 @@ def uv_pack_islands(ng, uv=[0.0, 0.0, 0.0], selection=None, margin=0.00100000004
     else:
         node.inputs["Rotate"].default_value = rotate
 
+
+    return node
 
 def uv_unwrap(ng, selection=None, seam=None, margin=0.0010000000474974513, fill_holes=None, method='ANGLE_BASED'):
 
@@ -4086,6 +4541,8 @@ def uv_unwrap(ng, selection=None, seam=None, margin=0.0010000000474974513, fill_
     node.method = method
 
 
+    return node
+
 def vertex_of_corner(ng, corner_index=None, ):
 
     node = ng.nodes.new("GeometryNodeVertexOfCorner")
@@ -4094,6 +4551,8 @@ def vertex_of_corner(ng, corner_index=None, ):
     else:
         node.inputs["Corner Index"].default_value = corner_index
 
+
+    return node
 
 def viewer(ng, geometry=None, value=0.0, domain='AUTO', data_type='FLOAT'):
 
@@ -4112,6 +4571,8 @@ def viewer(ng, geometry=None, value=0.0, domain='AUTO', data_type='FLOAT'):
     node.domain = domain
     node.data_type = data_type
 
+
+    return node
 
 def volume_cube(ng, density=1.0, background=0.0, min=[-1.0, -1.0, -1.0], max=[1.0, 1.0, 1.0], resolution_x=None, resolution_y=None, resolution_z=None, ):
 
@@ -4146,6 +4607,8 @@ def volume_cube(ng, density=1.0, background=0.0, min=[-1.0, -1.0, -1.0], max=[1.
         node.inputs["Resolution Z"].default_value = resolution_z
 
 
+    return node
+
 def volume_to_mesh(ng, volume=None, voxel_size=0.30000001192092896, voxel_amount=64.0, threshold=0.10000000149011612, adaptivity=0.0, resolution_mode='GRID'):
 
     node = ng.nodes.new("GeometryNodeVolumeToMesh")
@@ -4172,6 +4635,8 @@ def volume_to_mesh(ng, volume=None, voxel_size=0.30000001192092896, voxel_amount
     node.resolution_mode = resolution_mode
 
 
+    return node
+
 def frame(ng, shrink=True, text=None, label_size=20):
 
     node = ng.nodes.new("NodeFrame")
@@ -4180,10 +4645,14 @@ def frame(ng, shrink=True, text=None, label_size=20):
     node.label_size = label_size
 
 
+    return node
+
 def group_input(ng, ):
 
     node = ng.nodes.new("NodeGroupInput")
 
+
+    return node
 
 def group_output(ng, geometry=None, is_active_output=True):
 
@@ -4195,6 +4664,8 @@ def group_output(ng, geometry=None, is_active_output=True):
     node.is_active_output = is_active_output
 
 
+    return node
+
 def reroute(ng, input=None, ):
 
     node = ng.nodes.new("NodeReroute")
@@ -4203,6 +4674,8 @@ def reroute(ng, input=None, ):
     else:
         node.inputs["Input"].default_value = input
 
+
+    return node
 
 def clamp(ng, value=1.0, min=0.0, max=1.0, clamp_type='MINMAX'):
 
@@ -4222,6 +4695,8 @@ def clamp(ng, value=1.0, min=0.0, max=1.0, clamp_type='MINMAX'):
     node.clamp_type = clamp_type
 
 
+    return node
+
 def combine_rgb(ng, r=0.0, g=0.0, b=0.0, ):
 
     node = ng.nodes.new("ShaderNodeCombineRGB")
@@ -4238,6 +4713,8 @@ def combine_rgb(ng, r=0.0, g=0.0, b=0.0, ):
     else:
         node.inputs["B"].default_value = b
 
+
+    return node
 
 def combine_xyz(ng, x=0.0, y=0.0, z=0.0, ):
 
@@ -4258,6 +4735,8 @@ def combine_xyz(ng, x=0.0, y=0.0, z=0.0, ):
 # TODO : Mapping
 
 
+    return node
+
 def float_curve(ng, factor=1.0, value=1.0):
 
     node = ng.nodes.new("ShaderNodeFloatCurve")
@@ -4270,6 +4749,8 @@ def float_curve(ng, factor=1.0, value=1.0):
     else:
         node.inputs["Value"].default_value = value
 
+
+    return node
 
 def map_range_float(ng, value=1.0, from_min=0.0, from_max=1.0, to_min=0.0, to_max=1.0, steps=4.0, vector=[0.0, 0.0, 0.0], interpolation_type='LINEAR', clamp=True, data_type='FLOAT'):
 
@@ -4308,6 +4789,8 @@ def map_range_float(ng, value=1.0, from_min=0.0, from_max=1.0, to_min=0.0, to_ma
     node.data_type = data_type
 
 
+    return node
+
 def map_range_vector(ng, value=1.0, from_min=0.0, from_max=1.0, to_min=0.0, to_max=1.0, steps=4.0, vector=[0.0, 0.0, 0.0], interpolation_type='LINEAR', clamp=True, data_type='VECTOR_FLOAT'):
 
     node = ng.nodes.new("ShaderNodeMapRange")
@@ -4345,24 +4828,28 @@ def map_range_vector(ng, value=1.0, from_min=0.0, from_max=1.0, to_min=0.0, to_m
     node.data_type = data_type
 
 
+    return node
+
 def math(ng, a=0.5, b=0.5, c=0.5, operation='ADD', use_clamp=False):
 
     node = ng.nodes.new("ShaderNodeMath")
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs[0], value)
+    if isinstance(a, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[0], a)
     else:
-        node.inputs[0] = value
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs[1], value)
+        node.inputs[0].default_value = a
+    if isinstance(b, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[1], b)
     else:
-        node.inputs[1] = value
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs[2], value)
+        node.inputs[1].default_value = b
+    if isinstance(c, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[2], c)
     else:
-        node.inputs[2] = value
+        node.inputs[2].default_value = c
     node.operation = operation
     node.use_clamp = use_clamp
 
+
+    return node
 
 def mix_float(ng, factor=0.5, a=0.0, b=0.0, clamp_result=False, blend_type='MIX', clamp_factor=True, data_type='FLOAT', factor_mode='UNIFORM'):
 
@@ -4387,6 +4874,8 @@ def mix_float(ng, factor=0.5, a=0.0, b=0.0, clamp_result=False, blend_type='MIX'
     node.data_type = data_type
     node.factor_mode = factor_mode
 
+
+    return node
 
 def mix_vector(ng, factor=0.5, a=0.0, b=0.0, clamp_result=False, blend_type='MIX', clamp_factor=True, data_type='VECTOR_FLOAT', factor_mode='UNIFORM'):
 
@@ -4417,6 +4906,8 @@ def mix_vector(ng, factor=0.5, a=0.0, b=0.0, clamp_result=False, blend_type='MIX
     node.factor_mode = factor_mode
 
 
+    return node
+
 def mix_color(ng, factor=0.5,  a=0.0, b=0.0, clamp_result=False, blend_type='MIX', clamp_factor=True, data_type='COLOR', factor_mode='UNIFORM'):
 
     node = ng.nodes.new("ShaderNodeMix")
@@ -4441,6 +4932,8 @@ def mix_color(ng, factor=0.5,  a=0.0, b=0.0, clamp_result=False, blend_type='MIX
     node.factor_mode = factor_mode
 
 
+    return node
+
 def mix_rgb(ng, fac=0.5, color1=None, color2=None, blend_type='MIX', use_clamp=False, use_alpha=False):
 
     node = ng.nodes.new("ShaderNodeMixRGB")
@@ -4463,6 +4956,8 @@ def mix_rgb(ng, fac=0.5, color1=None, color2=None, blend_type='MIX', use_clamp=F
 # TODO : Mapping
 
 
+    return node
+
 def rgb_curve(ng, fac=1.0, color=None):
 
     node = ng.nodes.new("ShaderNodeRGBCurve")
@@ -4476,6 +4971,8 @@ def rgb_curve(ng, fac=1.0, color=None):
         node.inputs["Color"].default_value = color
 
 
+    return node
+
 def separate_rgb(ng, image=None, ):
 
     node = ng.nodes.new("ShaderNodeSeparateRGB")
@@ -4484,6 +4981,8 @@ def separate_rgb(ng, image=None, ):
     else:
         node.inputs["Image"].default_value = image
 
+
+    return node
 
 def separate_xyz(ng, vector=[0.0, 0.0, 0.0], ):
 
@@ -4495,6 +4994,8 @@ def separate_xyz(ng, vector=[0.0, 0.0, 0.0], ):
 
 # TODO: color_mapping,  texture_mappiing
 
+
+    return node
 
 def tex_brick(ng, vector=[0.0, 0.0, 0.0], color1=None, color2=None, mortar=None, scale=5.0, mortar_size=0.019999999552965164, mortar_smooth=0.10000000149011612, bias=0.0, brick_width=0.5, row_height=0.25, offset=0.5, squash=1.0,  squash_frequency=2, offset_frequency=2):
 
@@ -4547,6 +5048,8 @@ def tex_brick(ng, vector=[0.0, 0.0, 0.0], color1=None, color2=None, mortar=None,
 # TODO : color_mapping,  texture_mapping
 
 
+    return node
+
 def tex_checker(ng, vector=[0.0, 0.0, 0.0], color1=None, color2=None, scale=5.0):
 
     node = ng.nodes.new("ShaderNodeTexChecker")
@@ -4570,6 +5073,8 @@ def tex_checker(ng, vector=[0.0, 0.0, 0.0], color1=None, color2=None, scale=5.0)
 # TOOD: color_mapping,  texture_mapping
 
 
+    return node
+
 def tex_gradient(ng, vector=[0.0, 0.0, 0.0], gradient_type='LINEAR'):
 
     node = ng.nodes.new("ShaderNodeTexGradient")
@@ -4581,6 +5086,8 @@ def tex_gradient(ng, vector=[0.0, 0.0, 0.0], gradient_type='LINEAR'):
 
 # TOOD: color_mapping,  texture_mapping
 
+
+    return node
 
 def tex_magic(ng, vector=[0.0, 0.0, 0.0], scale=5.0, distortion=1.0, turbulence_depth=2):
 
@@ -4601,6 +5108,8 @@ def tex_magic(ng, vector=[0.0, 0.0, 0.0], scale=5.0, distortion=1.0, turbulence_
 
 # TOOD: color_mapping,  texture_mapping
 
+
+    return node
 
 def tex_musgrave(ng, vector=[0.0, 0.0, 0.0], w=0.0, scale=5.0, detail=2.0, dimension=2.0, lacunarity=2.0, offset=0.0, gain=1.0, musgrave_type='FBM', musgrave_dimensions='3D'):
 
@@ -4643,6 +5152,8 @@ def tex_musgrave(ng, vector=[0.0, 0.0, 0.0], w=0.0, scale=5.0, detail=2.0, dimen
 # TOOD: color_mapping,  texture_mapping
 
 
+    return node
+
 def tex_noise(ng, vector=[0.0, 0.0, 0.0], w=0.0, scale=5.0, detail=2.0, roughness=0.5, distortion=0.0, noise_dimensions='3D'):
 
     node = ng.nodes.new("ShaderNodeTexNoise")
@@ -4674,6 +5185,8 @@ def tex_noise(ng, vector=[0.0, 0.0, 0.0], w=0.0, scale=5.0, detail=2.0, roughnes
 
 # TOOD: color_mapping,  texture_mapping
 
+
+    return node
 
 def tex_voronoi(ng, vector=[0.0, 0.0, 0.0], w=0.0, scale=5.0, smoothness=1.0, exponent=0.5, randomness=1.0, distance='EUCLIDEAN', voronoi_dimensions='3D', feature='F1'):
 
@@ -4708,6 +5221,8 @@ def tex_voronoi(ng, vector=[0.0, 0.0, 0.0], w=0.0, scale=5.0, smoothness=1.0, ex
 
 # TOOD: color_mapping,  texture_mapping
 
+
+    return node
 
 def tex_wave(ng, vector=[0.0, 0.0, 0.0], scale=5.0, distortion=0.0, detail=2.0, detail_scale=1.0, detail_roughness=0.5, phase_offset=0.0, wave_profile='SIN', wave_type='BANDS', bands_direction='X', rings_direction='X'):
 
@@ -4746,6 +5261,8 @@ def tex_wave(ng, vector=[0.0, 0.0, 0.0], scale=5.0, distortion=0.0, detail=2.0, 
     node.rings_direction = rings_direction
 
 
+    return node
+
 def tex_white_noise(ng, vector=[0.0, 0.0, 0.0], w=0.0, noise_dimensions='3D'):
 
     node = ng.nodes.new("ShaderNodeTexWhiteNoise")
@@ -4762,6 +5279,8 @@ def tex_white_noise(ng, vector=[0.0, 0.0, 0.0], w=0.0, noise_dimensions='3D'):
 # TODO : ColorRamp
 
 
+    return node
+
 def val_to_rgb(ng, fac=0.5):
 
     node = ng.nodes.new("ShaderNodeValToRGB")
@@ -4771,12 +5290,16 @@ def val_to_rgb(ng, fac=0.5):
         node.inputs["Fac"].default_value = fac
 
 
+    return node
+
 def value(ng, ):
 
     node = ng.nodes.new("ShaderNodeValue")
 
 # TODO: CurveMapping
 
+
+    return node
 
 def vector_curve(ng, fac=1.0, vector=[0.0, 0.0, 0.0]):
 
@@ -4790,6 +5313,8 @@ def vector_curve(ng, fac=1.0, vector=[0.0, 0.0, 0.0]):
     else:
         node.inputs["Vector"].default_value = vector
 
+
+    return node
 
 def vector_math(ng, a=[0.0, 0.0, 0.0], b=[0.0, 0.0, 0.0], c=[0.0, 0.0, 0.0], scale=1.0, operation='ADD'):
 
@@ -4812,6 +5337,8 @@ def vector_math(ng, a=[0.0, 0.0, 0.0], b=[0.0, 0.0, 0.0], c=[0.0, 0.0, 0.0], sca
         node.inputs["Scale"].default_value = scale
     node.operation = operation
 
+
+    return node
 
 def vector_rotate(ng, vector=[0.0, 0.0, 0.0], center=[0.0, 0.0, 0.0], axis=[0.0, 0.0, 1.0], angle=0.0, rotation=[0.0, 0.0, 0.0], rotation_type='AXIS_ANGLE', invert=False):
 
@@ -4838,3 +5365,5 @@ def vector_rotate(ng, vector=[0.0, 0.0, 0.0], center=[0.0, 0.0, 0.0], axis=[0.0,
         node.inputs["Rotation"].default_value = rotation
     node.rotation_type = rotation_type
     node.invert = invert
+
+    return node
