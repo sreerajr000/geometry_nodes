@@ -1141,57 +1141,113 @@ def face_of_corner(corner_index=None, ):
     else:
         node.inputs["Corner Index"] = corner_index
 
-def field_at_index(index=None, value=0.0, value=0.0, value=0.0, value=0.0, value=0.0, domain='POINT', data_type='FLOAT'):
+def field_at_index_float(index=None, value=0.0, domain='POINT', data_type='FLOAT'):
     node = ng.nodes.new("GeometryNodeFieldAtIndex")
     if isinstance(index, bpy.types.NodeSocket):
         ng.links.new(node.inputs["Index"], index)
     else:
         node.inputs["Index"] = index
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[0], value)
     else:
-        node.inputs["Value"] = value
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
-    else:
-        node.inputs["Value"] = value
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
-    else:
-        node.inputs["Value"] = value
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
-    else:
-        node.inputs["Value"] = value
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
-    else:
-        node.inputs["Value"] = value
+        node.inputs[0] = value
     node.domain = domain
     node.data_type = data_type
 
-def field_on_domain(value=0.0, value=0.0, value=0.0, value=0.0, value=0.0, domain='POINT', data_type='FLOAT'):
+def field_at_index_int(index=None, value=0.0, domain='POINT', data_type='INT'):
+    node = ng.nodes.new("GeometryNodeFieldAtIndex")
+    if isinstance(index, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Index"], index)
+    else:
+        node.inputs["Index"] = index
+    if isinstance(value, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[1], value)
+    else:
+        node.inputs[1] = value
+    node.domain = domain
+    node.data_type = data_type
+
+def field_at_index_vector(index=None, value=0.0, domain='POINT', data_type='VECTOR_FLOAT'):
+    node = ng.nodes.new("GeometryNodeFieldAtIndex")
+    if isinstance(index, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Index"], index)
+    else:
+        node.inputs["Index"] = index
+    if isinstance(value, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[2], value)
+    else:
+        node.inputs[2] = value
+    node.domain = domain
+    node.data_type = data_type
+
+def field_at_index_color(index=None, value=0.0, domain='POINT', data_type='COLOR'):
+    node = ng.nodes.new("GeometryNodeFieldAtIndex")
+    if isinstance(index, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Index"], index)
+    else:
+        node.inputs["Index"] = index
+    if isinstance(value, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[3], value)
+    else:
+        node.inputs[3] = value
+    node.domain = domain
+    node.data_type = data_type
+
+def field_at_index_boolean(index=None, value=0.0, domain='POINT', data_type='BOOLEAN'):
+    node = ng.nodes.new("GeometryNodeFieldAtIndex")
+    if isinstance(index, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Index"], index)
+    else:
+        node.inputs["Index"] = index
+    if isinstance(value, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[4], value)
+    else:
+        node.inputs[4] = value
+    node.domain = domain
+    node.data_type = data_type
+
+def field_on_domain_float(value=0.0, domain='POINT', data_type='FLOAT'):
     node = ng.nodes.new("GeometryNodeFieldOnDomain")
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[0], value)
     else:
-        node.inputs["Value"] = value
+        node.inputs[0] = value
+    node.domain = domain
+    node.data_type = data_type
+
+def field_on_domain_int(value=0.0, domain='POINT', data_type='INT'):
+    node = ng.nodes.new("GeometryNodeFieldOnDomain")
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[1], value)
     else:
-        node.inputs["Value"] = value
+        node.inputs[1] = value
+    node.domain = domain
+    node.data_type = data_type
+
+def field_on_domain_vector(value=0.0, domain='POINT', data_type='VECTOR_FLOAT'):
+    node = ng.nodes.new("GeometryNodeFieldOnDomain")
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[2], value)
     else:
-        node.inputs["Value"] = value
+        node.inputs[2] = value
+    node.domain = domain
+    node.data_type = data_type
+
+def field_on_domain_color(value=0.0, domain='POINT', data_type='COLOR'):
+    node = ng.nodes.new("GeometryNodeFieldOnDomain")
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[3], value)
     else:
-        node.inputs["Value"] = value
+        node.inputs[3] = value
+    node.domain = domain
+    node.data_type = data_type
+
+def field_on_domain_boolean(value=0.0, domain='POINT', data_type='BOOLEAN'):
+    node = ng.nodes.new("GeometryNodeFieldOnDomain")
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[4], value)
     else:
-        node.inputs["Value"] = value
+        node.inputs[4] = value
     node.domain = domain
     node.data_type = data_type
 
@@ -1241,7 +1297,7 @@ def geometry_to_instance(geometry=None, ):
     else:
         node.inputs["Geometry"] = geometry
 
-def group(, node_tree=None):
+def group(node_tree=None):
     node = ng.nodes.new("GeometryNodeGroup")
     node.node_tree = node_tree
 
@@ -1841,32 +1897,116 @@ def proximity(target=None, source_position=[0.0, 0.0, 0.0], target_element='FACE
         node.inputs["Source Position"] = source_position
     node.target_element = target_element
 
-def raycast(target_geometry=None, attribute=[0.0, 0.0, 0.0], attribute=[0.0, 0.0, 0.0], attribute=[0.0, 0.0, 0.0], attribute=[0.0, 0.0, 0.0], attribute=[0.0, 0.0, 0.0], source_position=[0.0, 0.0, 0.0], ray_direction=[0.0, 0.0, -1.0], ray_length=100.0, mapping='INTERPOLATED', data_type='FLOAT'):
+def raycast_float(target_geometry=None, attribute=[0.0, 0.0, 0.0], source_position=[0.0, 0.0, 0.0], ray_direction=[0.0, 0.0, -1.0], ray_length=100.0, mapping='INTERPOLATED', data_type='FLOAT'):
     node = ng.nodes.new("GeometryNodeRaycast")
     if isinstance(target_geometry, bpy.types.NodeSocket):
         ng.links.new(node.inputs["Target Geometry"], target_geometry)
     else:
         node.inputs["Target Geometry"] = target_geometry
     if isinstance(attribute, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Attribute"], attribute)
+        ng.links.new(node.inputs[0], attribute)
     else:
-        node.inputs["Attribute"] = attribute
+        node.inputs[0] = attribute
+    if isinstance(source_position, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Source Position"], source_position)
+    else:
+        node.inputs["Source Position"] = source_position
+    if isinstance(ray_direction, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Ray Direction"], ray_direction)
+    else:
+        node.inputs["Ray Direction"] = ray_direction
+    if isinstance(ray_length, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Ray Length"], ray_length)
+    else:
+        node.inputs["Ray Length"] = ray_length
+    node.mapping = mapping
+    node.data_type = data_type
+
+def raycast_int(target_geometry=None, attribute=[0.0, 0.0, 0.0], source_position=[0.0, 0.0, 0.0], ray_direction=[0.0, 0.0, -1.0], ray_length=100.0, mapping='INTERPOLATED', data_type='INT'):
+    node = ng.nodes.new("GeometryNodeRaycast")
+    if isinstance(target_geometry, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Target Geometry"], target_geometry)
+    else:
+        node.inputs["Target Geometry"] = target_geometry
     if isinstance(attribute, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Attribute"], attribute)
+        ng.links.new(node.inputs[1], attribute)
     else:
-        node.inputs["Attribute"] = attribute
+        node.inputs[1] = attribute
+    if isinstance(source_position, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Source Position"], source_position)
+    else:
+        node.inputs["Source Position"] = source_position
+    if isinstance(ray_direction, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Ray Direction"], ray_direction)
+    else:
+        node.inputs["Ray Direction"] = ray_direction
+    if isinstance(ray_length, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Ray Length"], ray_length)
+    else:
+        node.inputs["Ray Length"] = ray_length
+    node.mapping = mapping
+    node.data_type = data_type
+
+def raycast_vector(target_geometry=None, attribute=[0.0, 0.0, 0.0], source_position=[0.0, 0.0, 0.0], ray_direction=[0.0, 0.0, -1.0], ray_length=100.0, mapping='INTERPOLATED', data_type='VECTOR_FLOAT'):
+    node = ng.nodes.new("GeometryNodeRaycast")
+    if isinstance(target_geometry, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Target Geometry"], target_geometry)
+    else:
+        node.inputs["Target Geometry"] = target_geometry
     if isinstance(attribute, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Attribute"], attribute)
+        ng.links.new(node.inputs[2], attribute)
     else:
-        node.inputs["Attribute"] = attribute
+        node.inputs[2] = attribute
+    if isinstance(source_position, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Source Position"], source_position)
+    else:
+        node.inputs["Source Position"] = source_position
+    if isinstance(ray_direction, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Ray Direction"], ray_direction)
+    else:
+        node.inputs["Ray Direction"] = ray_direction
+    if isinstance(ray_length, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Ray Length"], ray_length)
+    else:
+        node.inputs["Ray Length"] = ray_length
+    node.mapping = mapping
+    node.data_type = data_type
+
+def raycast_color(target_geometry=None, attribute=[0.0, 0.0, 0.0], source_position=[0.0, 0.0, 0.0], ray_direction=[0.0, 0.0, -1.0], ray_length=100.0, mapping='INTERPOLATED', data_type='COLOR'):
+    node = ng.nodes.new("GeometryNodeRaycast")
+    if isinstance(target_geometry, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Target Geometry"], target_geometry)
+    else:
+        node.inputs["Target Geometry"] = target_geometry
     if isinstance(attribute, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Attribute"], attribute)
+        ng.links.new(node.inputs[3], attribute)
     else:
-        node.inputs["Attribute"] = attribute
+        node.inputs[3] = attribute
+    if isinstance(source_position, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Source Position"], source_position)
+    else:
+        node.inputs["Source Position"] = source_position
+    if isinstance(ray_direction, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Ray Direction"], ray_direction)
+    else:
+        node.inputs["Ray Direction"] = ray_direction
+    if isinstance(ray_length, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Ray Length"], ray_length)
+    else:
+        node.inputs["Ray Length"] = ray_length
+    node.mapping = mapping
+    node.data_type = data_type
+
+def raycast_boolean(target_geometry=None, attribute=[0.0, 0.0, 0.0], source_position=[0.0, 0.0, 0.0], ray_direction=[0.0, 0.0, -1.0], ray_length=100.0, mapping='INTERPOLATED', data_type='BOOLEAN'):
+    node = ng.nodes.new("GeometryNodeRaycast")
+    if isinstance(target_geometry, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Target Geometry"], target_geometry)
+    else:
+        node.inputs["Target Geometry"] = target_geometry
     if isinstance(attribute, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Attribute"], attribute)
+        ng.links.new(node.inputs[4], attribute)
     else:
-        node.inputs["Attribute"] = attribute
+        node.inputs[4] = attribute
     if isinstance(source_position, bpy.types.NodeSocket):
         ng.links.new(node.inputs["Source Position"], source_position)
     else:
@@ -1970,32 +2110,16 @@ def rotate_instances(instances=None, selection=None, rotation=[0.0, 0.0, 0.0], p
     else:
         node.inputs["Local Space"] = local_space
 
-def sample_curve(curves=None, value=0.0, value=0.0, value=0.0, value=0.0, value=0.0, factor=0.0, length=0.0, curve_index=None, mode='FACTOR', use_all_curves=False, data_type='FLOAT'):
+def sample_curve_float(curves=None, value=0.0, factor=0.0, length=0.0, curve_index=None, mode='FACTOR', use_all_curves=False, data_type='FLOAT'):
     node = ng.nodes.new("GeometryNodeSampleCurve")
     if isinstance(curves, bpy.types.NodeSocket):
         ng.links.new(node.inputs["Curves"], curves)
     else:
         node.inputs["Curves"] = curves
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[0], value)
     else:
-        node.inputs["Value"] = value
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
-    else:
-        node.inputs["Value"] = value
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
-    else:
-        node.inputs["Value"] = value
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
-    else:
-        node.inputs["Value"] = value
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
-    else:
-        node.inputs["Value"] = value
+        node.inputs[0] = value
     if isinstance(factor, bpy.types.NodeSocket):
         ng.links.new(node.inputs["Factor"], factor)
     else:
@@ -2012,32 +2136,192 @@ def sample_curve(curves=None, value=0.0, value=0.0, value=0.0, value=0.0, value=
     node.use_all_curves = use_all_curves
     node.data_type = data_type
 
-def sample_index(geometry=None, value=0.0, value=0.0, value=0.0, value=0.0, value=0.0, index=None, clamp=False, domain='POINT', data_type='FLOAT'):
+def sample_curve_int(curves=None, value=0.0, factor=0.0, length=0.0, curve_index=None, mode='FACTOR', use_all_curves=False, data_type='INT'):
+    node = ng.nodes.new("GeometryNodeSampleCurve")
+    if isinstance(curves, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Curves"], curves)
+    else:
+        node.inputs["Curves"] = curves
+    if isinstance(value, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[1], value)
+    else:
+        node.inputs[1] = value
+    if isinstance(factor, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Factor"], factor)
+    else:
+        node.inputs["Factor"] = factor
+    if isinstance(length, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Length"], length)
+    else:
+        node.inputs["Length"] = length
+    if isinstance(curve_index, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Curve Index"], curve_index)
+    else:
+        node.inputs["Curve Index"] = curve_index
+    node.mode = mode
+    node.use_all_curves = use_all_curves
+    node.data_type = data_type
+
+def sample_curve_vector(curves=None, value=0.0, factor=0.0, length=0.0, curve_index=None, mode='FACTOR', use_all_curves=False, data_type='VECTOR_FLOAT'):
+    node = ng.nodes.new("GeometryNodeSampleCurve")
+    if isinstance(curves, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Curves"], curves)
+    else:
+        node.inputs["Curves"] = curves
+    if isinstance(value, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[2], value)
+    else:
+        node.inputs[2] = value
+    if isinstance(factor, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Factor"], factor)
+    else:
+        node.inputs["Factor"] = factor
+    if isinstance(length, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Length"], length)
+    else:
+        node.inputs["Length"] = length
+    if isinstance(curve_index, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Curve Index"], curve_index)
+    else:
+        node.inputs["Curve Index"] = curve_index
+    node.mode = mode
+    node.use_all_curves = use_all_curves
+    node.data_type = data_type
+
+def sample_curve_color(curves=None, value=0.0, factor=0.0, length=0.0, curve_index=None, mode='FACTOR', use_all_curves=False, data_type='COLOR'):
+    node = ng.nodes.new("GeometryNodeSampleCurve")
+    if isinstance(curves, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Curves"], curves)
+    else:
+        node.inputs["Curves"] = curves
+    if isinstance(value, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[3], value)
+    else:
+        node.inputs[3] = value
+    if isinstance(factor, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Factor"], factor)
+    else:
+        node.inputs["Factor"] = factor
+    if isinstance(length, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Length"], length)
+    else:
+        node.inputs["Length"] = length
+    if isinstance(curve_index, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Curve Index"], curve_index)
+    else:
+        node.inputs["Curve Index"] = curve_index
+    node.mode = mode
+    node.use_all_curves = use_all_curves
+    node.data_type = data_type
+
+def sample_curve_boolean(curves=None, value=0.0, factor=0.0, length=0.0, curve_index=None, mode='FACTOR', use_all_curves=False, data_type='BOOLEAN'):
+    node = ng.nodes.new("GeometryNodeSampleCurve")
+    if isinstance(curves, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Curves"], curves)
+    else:
+        node.inputs["Curves"] = curves
+    if isinstance(value, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[4], value)
+    else:
+        node.inputs[4] = value
+    if isinstance(factor, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Factor"], factor)
+    else:
+        node.inputs["Factor"] = factor
+    if isinstance(length, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Length"], length)
+    else:
+        node.inputs["Length"] = length
+    if isinstance(curve_index, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Curve Index"], curve_index)
+    else:
+        node.inputs["Curve Index"] = curve_index
+    node.mode = mode
+    node.use_all_curves = use_all_curves
+    node.data_type = data_type
+
+def sample_index_float(geometry=None, value=0.0, index=None, clamp=False, domain='POINT', data_type='FLOAT'):
     node = ng.nodes.new("GeometryNodeSampleIndex")
     if isinstance(geometry, bpy.types.NodeSocket):
         ng.links.new(node.inputs["Geometry"], geometry)
     else:
         node.inputs["Geometry"] = geometry
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[0], value)
     else:
-        node.inputs["Value"] = value
+        node.inputs[0] = value
+    if isinstance(index, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Index"], index)
+    else:
+        node.inputs["Index"] = index
+    node.clamp = clamp
+    node.domain = domain
+    node.data_type = data_type
+
+def sample_index_int(geometry=None, value=0.0, index=None, clamp=False, domain='POINT', data_type='INT'):
+    node = ng.nodes.new("GeometryNodeSampleIndex")
+    if isinstance(geometry, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Geometry"], geometry)
+    else:
+        node.inputs["Geometry"] = geometry
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[1], value)
     else:
-        node.inputs["Value"] = value
+        node.inputs[1] = value
+    if isinstance(index, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Index"], index)
+    else:
+        node.inputs["Index"] = index
+    node.clamp = clamp
+    node.domain = domain
+    node.data_type = data_type
+
+def sample_index_vector(geometry=None, value=0.0, index=None, clamp=False, domain='POINT', data_type='VECTOR_FLOAT'):
+    node = ng.nodes.new("GeometryNodeSampleIndex")
+    if isinstance(geometry, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Geometry"], geometry)
+    else:
+        node.inputs["Geometry"] = geometry
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[2], value)
     else:
-        node.inputs["Value"] = value
+        node.inputs[2] = value
+    if isinstance(index, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Index"], index)
+    else:
+        node.inputs["Index"] = index
+    node.clamp = clamp
+    node.domain = domain
+    node.data_type = data_type
+
+def sample_index_color(geometry=None, value=0.0, index=None, clamp=False, domain='POINT', data_type='COLOR'):
+    node = ng.nodes.new("GeometryNodeSampleIndex")
+    if isinstance(geometry, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Geometry"], geometry)
+    else:
+        node.inputs["Geometry"] = geometry
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[3], value)
     else:
-        node.inputs["Value"] = value
+        node.inputs[3] = value
+    if isinstance(index, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Index"], index)
+    else:
+        node.inputs["Index"] = index
+    node.clamp = clamp
+    node.domain = domain
+    node.data_type = data_type
+
+def sample_index_boolean(geometry=None, value=0.0, index=None, clamp=False, domain='POINT', data_type='BOOLEAN'):
+    node = ng.nodes.new("GeometryNodeSampleIndex")
+    if isinstance(geometry, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Geometry"], geometry)
+    else:
+        node.inputs["Geometry"] = geometry
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[4], value)
     else:
-        node.inputs["Value"] = value
+        node.inputs[4] = value
     if isinstance(index, bpy.types.NodeSocket):
         ng.links.new(node.inputs["Index"], index)
     else:
@@ -2058,64 +2342,176 @@ def sample_nearest(geometry=None, sample_position=[0.0, 0.0, 0.0], domain='POINT
         node.inputs["Sample Position"] = sample_position
     node.domain = domain
 
-def sample_nearest_surface(mesh=None, value=0.0, value=0.0, value=0.0, value=0.0, value=0.0, sample_position=[0.0, 0.0, 0.0], data_type='FLOAT'):
+def sample_nearest_surface_float(mesh=None, value=0.0, sample_position=[0.0, 0.0, 0.0], data_type='FLOAT'):
     node = ng.nodes.new("GeometryNodeSampleNearestSurface")
     if isinstance(mesh, bpy.types.NodeSocket):
         ng.links.new(node.inputs["Mesh"], mesh)
     else:
         node.inputs["Mesh"] = mesh
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[0], value)
     else:
-        node.inputs["Value"] = value
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
-    else:
-        node.inputs["Value"] = value
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
-    else:
-        node.inputs["Value"] = value
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
-    else:
-        node.inputs["Value"] = value
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
-    else:
-        node.inputs["Value"] = value
+        node.inputs[0] = value
     if isinstance(sample_position, bpy.types.NodeSocket):
         ng.links.new(node.inputs["Sample Position"], sample_position)
     else:
         node.inputs["Sample Position"] = sample_position
     node.data_type = data_type
 
-def sample_uv_surface(mesh=None, value=0.0, value=0.0, value=0.0, value=0.0, value=0.0, source_uv_map=[0.0, 0.0, 0.0], sample_uv=[0.0, 0.0, 0.0], data_type='FLOAT'):
+def sample_nearest_surface_int(mesh=None, value=0.0, sample_position=[0.0, 0.0, 0.0], data_type='INT'):
+    node = ng.nodes.new("GeometryNodeSampleNearestSurface")
+    if isinstance(mesh, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Mesh"], mesh)
+    else:
+        node.inputs["Mesh"] = mesh
+    if isinstance(value, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[1], value)
+    else:
+        node.inputs[1] = value
+    if isinstance(sample_position, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Sample Position"], sample_position)
+    else:
+        node.inputs["Sample Position"] = sample_position
+    node.data_type = data_type
+
+def sample_nearest_surface_vector(mesh=None, value=0.0, sample_position=[0.0, 0.0, 0.0], data_type='VECTOR_FLOAT'):
+    node = ng.nodes.new("GeometryNodeSampleNearestSurface")
+    if isinstance(mesh, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Mesh"], mesh)
+    else:
+        node.inputs["Mesh"] = mesh
+    if isinstance(value, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[2], value)
+    else:
+        node.inputs[2] = value
+    if isinstance(sample_position, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Sample Position"], sample_position)
+    else:
+        node.inputs["Sample Position"] = sample_position
+    node.data_type = data_type
+
+def sample_nearest_surface_color(mesh=None, value=0.0, sample_position=[0.0, 0.0, 0.0], data_type='COLOR'):
+    node = ng.nodes.new("GeometryNodeSampleNearestSurface")
+    if isinstance(mesh, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Mesh"], mesh)
+    else:
+        node.inputs["Mesh"] = mesh
+    if isinstance(value, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[3], value)
+    else:
+        node.inputs[3] = value
+    if isinstance(sample_position, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Sample Position"], sample_position)
+    else:
+        node.inputs["Sample Position"] = sample_position
+    node.data_type = data_type
+
+def sample_nearest_surface_boolean(mesh=None, value=0.0, sample_position=[0.0, 0.0, 0.0], data_type='BOOLEAN'):
+    node = ng.nodes.new("GeometryNodeSampleNearestSurface")
+    if isinstance(mesh, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Mesh"], mesh)
+    else:
+        node.inputs["Mesh"] = mesh
+    if isinstance(value, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[4], value)
+    else:
+        node.inputs[4] = value
+    if isinstance(sample_position, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Sample Position"], sample_position)
+    else:
+        node.inputs["Sample Position"] = sample_position
+    node.data_type = data_type
+
+def sample_uv_surface_float(mesh=None, value=0.0, source_uv_map=[0.0, 0.0, 0.0], sample_uv=[0.0, 0.0, 0.0], data_type='FLOAT'):
     node = ng.nodes.new("GeometryNodeSampleUVSurface")
     if isinstance(mesh, bpy.types.NodeSocket):
         ng.links.new(node.inputs["Mesh"], mesh)
     else:
         node.inputs["Mesh"] = mesh
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[0], value)
     else:
-        node.inputs["Value"] = value
+        node.inputs[0] = value
+    if isinstance(source_uv_map, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Source UV Map"], source_uv_map)
+    else:
+        node.inputs["Source UV Map"] = source_uv_map
+    if isinstance(sample_uv, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Sample UV"], sample_uv)
+    else:
+        node.inputs["Sample UV"] = sample_uv
+    node.data_type = data_type
+
+def sample_uv_surface_int(mesh=None, value=0.0, source_uv_map=[0.0, 0.0, 0.0], sample_uv=[0.0, 0.0, 0.0], data_type='INT'):
+    node = ng.nodes.new("GeometryNodeSampleUVSurface")
+    if isinstance(mesh, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Mesh"], mesh)
+    else:
+        node.inputs["Mesh"] = mesh
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[1], value)
     else:
-        node.inputs["Value"] = value
+        node.inputs[1] = value
+    if isinstance(source_uv_map, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Source UV Map"], source_uv_map)
+    else:
+        node.inputs["Source UV Map"] = source_uv_map
+    if isinstance(sample_uv, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Sample UV"], sample_uv)
+    else:
+        node.inputs["Sample UV"] = sample_uv
+    node.data_type = data_type
+
+def sample_uv_surface_vector(mesh=None, value=0.0, source_uv_map=[0.0, 0.0, 0.0], sample_uv=[0.0, 0.0, 0.0], data_type='VECTOR_FLOAT'):
+    node = ng.nodes.new("GeometryNodeSampleUVSurface")
+    if isinstance(mesh, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Mesh"], mesh)
+    else:
+        node.inputs["Mesh"] = mesh
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[2], value)
     else:
-        node.inputs["Value"] = value
+        node.inputs[2] = value
+    if isinstance(source_uv_map, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Source UV Map"], source_uv_map)
+    else:
+        node.inputs["Source UV Map"] = source_uv_map
+    if isinstance(sample_uv, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Sample UV"], sample_uv)
+    else:
+        node.inputs["Sample UV"] = sample_uv
+    node.data_type = data_type
+
+def sample_uv_surface_color(mesh=None, value=0.0, source_uv_map=[0.0, 0.0, 0.0], sample_uv=[0.0, 0.0, 0.0], data_type='COLOR'):
+    node = ng.nodes.new("GeometryNodeSampleUVSurface")
+    if isinstance(mesh, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Mesh"], mesh)
+    else:
+        node.inputs["Mesh"] = mesh
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[3], value)
     else:
-        node.inputs["Value"] = value
+        node.inputs[3] = value
+    if isinstance(source_uv_map, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Source UV Map"], source_uv_map)
+    else:
+        node.inputs["Source UV Map"] = source_uv_map
+    if isinstance(sample_uv, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Sample UV"], sample_uv)
+    else:
+        node.inputs["Sample UV"] = sample_uv
+    node.data_type = data_type
+
+def sample_uv_surface_boolean(mesh=None, value=0.0, source_uv_map=[0.0, 0.0, 0.0], sample_uv=[0.0, 0.0, 0.0], data_type='BOOLEAN'):
+    node = ng.nodes.new("GeometryNodeSampleUVSurface")
+    if isinstance(mesh, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Mesh"], mesh)
+    else:
+        node.inputs["Mesh"] = mesh
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[4], value)
     else:
-        node.inputs["Value"] = value
+        node.inputs[4] = value
     if isinstance(source_uv_map, bpy.types.NodeSocket):
         ng.links.new(node.inputs["Source UV Map"], source_uv_map)
     else:
@@ -2399,7 +2795,7 @@ def split_edges(mesh=None, selection=None, ):
     else:
         node.inputs["Selection"] = selection
 
-def store_named_attribute(geometry=None, selection=None, name=None, value=[0.0, 0.0, 0.0], value=[0.0, 0.0, 0.0], value=[0.0, 0.0, 0.0], value=[0.0, 0.0, 0.0], value=[0.0, 0.0, 0.0], domain='POINT', data_type='FLOAT'):
+def store_named_attribute_float(geometry=None, selection=None, name=None, value=[0.0, 0.0, 0.0], domain='POINT', data_type='FLOAT'):
     node = ng.nodes.new("GeometryNodeStoreNamedAttribute")
     if isinstance(geometry, bpy.types.NodeSocket):
         ng.links.new(node.inputs["Geometry"], geometry)
@@ -2414,29 +2810,97 @@ def store_named_attribute(geometry=None, selection=None, name=None, value=[0.0, 
     else:
         node.inputs["Name"] = name
     if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
+        ng.links.new(node.inputs[0], value)
     else:
-        node.inputs["Value"] = value
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
-    else:
-        node.inputs["Value"] = value
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
-    else:
-        node.inputs["Value"] = value
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
-    else:
-        node.inputs["Value"] = value
-    if isinstance(value, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Value"], value)
-    else:
-        node.inputs["Value"] = value
+        node.inputs[0] = value
     node.domain = domain
     node.data_type = data_type
 
-def string_join(delimiter=None, strings=None, ):
+def store_named_attribute_int(geometry=None, selection=None, name=None, value=[0.0, 0.0, 0.0], domain='POINT', data_type='INT'):
+    node = ng.nodes.new("GeometryNodeStoreNamedAttribute")
+    if isinstance(geometry, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Geometry"], geometry)
+    else:
+        node.inputs["Geometry"] = geometry
+    if isinstance(selection, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Selection"], selection)
+    else:
+        node.inputs["Selection"] = selection
+    if isinstance(name, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Name"], name)
+    else:
+        node.inputs["Name"] = name
+    if isinstance(value, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[1], value)
+    else:
+        node.inputs[1] = value
+    node.domain = domain
+    node.data_type = data_type
+
+def store_named_attribute_vector(geometry=None, selection=None, name=None, value=[0.0, 0.0, 0.0], domain='POINT', data_type='VECTOR_FLOAT'):
+    node = ng.nodes.new("GeometryNodeStoreNamedAttribute")
+    if isinstance(geometry, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Geometry"], geometry)
+    else:
+        node.inputs["Geometry"] = geometry
+    if isinstance(selection, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Selection"], selection)
+    else:
+        node.inputs["Selection"] = selection
+    if isinstance(name, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Name"], name)
+    else:
+        node.inputs["Name"] = name
+    if isinstance(value, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[2], value)
+    else:
+        node.inputs[2] = value
+    node.domain = domain
+    node.data_type = data_type
+
+def store_named_attribute_color(geometry=None, selection=None, name=None, value=[0.0, 0.0, 0.0], domain='POINT', data_type='COLOR'):
+    node = ng.nodes.new("GeometryNodeStoreNamedAttribute")
+    if isinstance(geometry, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Geometry"], geometry)
+    else:
+        node.inputs["Geometry"] = geometry
+    if isinstance(selection, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Selection"], selection)
+    else:
+        node.inputs["Selection"] = selection
+    if isinstance(name, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Name"], name)
+    else:
+        node.inputs["Name"] = name
+    if isinstance(value, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[3], value)
+    else:
+        node.inputs[3] = value
+    node.domain = domain
+    node.data_type = data_type
+
+def store_named_attribute_boolean(geometry=None, selection=None, name=None, value=[0.0, 0.0, 0.0], domain='POINT', data_type='BOOLEAN'):
+    node = ng.nodes.new("GeometryNodeStoreNamedAttribute")
+    if isinstance(geometry, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Geometry"], geometry)
+    else:
+        node.inputs["Geometry"] = geometry
+    if isinstance(selection, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Selection"], selection)
+    else:
+        node.inputs["Selection"] = selection
+    if isinstance(name, bpy.types.NodeSocket):
+        ng.links.new(node.inputs["Name"], name)
+    else:
+        node.inputs["Name"] = name
+    if isinstance(value, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[4], value)
+    else:
+        node.inputs[4] = value
+    node.domain = domain
+    node.data_type = data_type
+
+def string_join(delimiter=None, strings=None):
     node = ng.nodes.new("GeometryNodeStringJoin")
     if isinstance(delimiter, bpy.types.NodeSocket):
         ng.links.new(node.inputs["Delimiter"], delimiter)
@@ -2447,7 +2911,7 @@ def string_join(delimiter=None, strings=None, ):
     else:
         node.inputs["Strings"] = strings
 
-def string_to_curves(string=None, size=1.0, character_spacing=1.0, word_spacing=1.0, line_spacing=1.0, text_box_width=0.0, text_box_height=0.0, align_y='TOP_BASELINE', pivot_mode='BOTTOM_LEFT', overflow='OVERFLOW', font=<bpy_struct, VectorFont("Bfont Regular") at 0x0000014455384108>, align_x='LEFT'):
+def string_to_curves(string=None, size=1.0, character_spacing=1.0, word_spacing=1.0, line_spacing=1.0, text_box_width=0.0, text_box_height=0.0, align_y='TOP_BASELINE', pivot_mode='BOTTOM_LEFT', overflow='OVERFLOW', font=bpy.data.fonts['BFont Regular'], align_x='LEFT'):
     node = ng.nodes.new("GeometryNodeStringToCurves")
     if isinstance(string, bpy.types.NodeSocket):
         ng.links.new(node.inputs["String"], string)
@@ -2483,7 +2947,7 @@ def string_to_curves(string=None, size=1.0, character_spacing=1.0, word_spacing=
     node.font = font
     node.align_x = align_x
 
-def subdivide_curve(curve=None, cuts=None, ):
+def subdivide_curve(curve=None, cuts=None):
     node = ng.nodes.new("GeometryNodeSubdivideCurve")
     if isinstance(curve, bpy.types.NodeSocket):
         ng.links.new(node.inputs["Curve"], curve)
@@ -2494,7 +2958,7 @@ def subdivide_curve(curve=None, cuts=None, ):
     else:
         node.inputs["Cuts"] = cuts
 
-def subdivide_mesh(mesh=None, level=None, ):
+def subdivide_mesh(mesh=None, level=None):
     node = ng.nodes.new("GeometryNodeSubdivideMesh")
     if isinstance(mesh, bpy.types.NodeSocket):
         ng.links.new(node.inputs["Mesh"], mesh)
@@ -2526,113 +2990,199 @@ def subdivision_surface(mesh=None, level=None, edge_crease=0.0, vertex_crease=0.
     node.uv_smooth = uv_smooth
     node.boundary_smooth = boundary_smooth
 
-def switch(switch=None, switch=None, false=0.0, true=0.0, false=0.0, true=0.0, false=0.0, true=0.0, false=0.0, true=0.0, false=0.0, true=0.0, false=0.0, true=0.0, false=0.0, true=0.0, false=0.0, true=0.0, false=0.0, true=0.0, false=0.0, true=0.0, false=0.0, true=0.0, false=0.0, true=0.0, input_type='GEOMETRY'):
+def switch_float(switch=False, false=0.0, true=0.0, input_type='FLOAT'):
     node = ng.nodes.new("GeometryNodeSwitch")
     if isinstance(switch, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Switch"], switch)
+        ng.links.new(node.inputs[0], switch)
     else:
-        node.inputs["Switch"] = switch
-    if isinstance(switch, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Switch"], switch)
-    else:
-        node.inputs["Switch"] = switch
+        node.inputs[0] = switch
     if isinstance(false, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["False"], false)
+        ng.links.new(node.inputs[2], false)
     else:
-        node.inputs["False"] = false
+        node.inputs[2] = false
     if isinstance(true, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["True"], true)
+        ng.links.new(node.inputs[3], true)
     else:
-        node.inputs["True"] = true
-    if isinstance(false, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["False"], false)
-    else:
-        node.inputs["False"] = false
-    if isinstance(true, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["True"], true)
-    else:
-        node.inputs["True"] = true
-    if isinstance(false, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["False"], false)
-    else:
-        node.inputs["False"] = false
-    if isinstance(true, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["True"], true)
-    else:
-        node.inputs["True"] = true
-    if isinstance(false, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["False"], false)
-    else:
-        node.inputs["False"] = false
-    if isinstance(true, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["True"], true)
-    else:
-        node.inputs["True"] = true
-    if isinstance(false, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["False"], false)
-    else:
-        node.inputs["False"] = false
-    if isinstance(true, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["True"], true)
-    else:
-        node.inputs["True"] = true
-    if isinstance(false, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["False"], false)
-    else:
-        node.inputs["False"] = false
-    if isinstance(true, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["True"], true)
-    else:
-        node.inputs["True"] = true
-    if isinstance(false, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["False"], false)
-    else:
-        node.inputs["False"] = false
-    if isinstance(true, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["True"], true)
-    else:
-        node.inputs["True"] = true
-    if isinstance(false, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["False"], false)
-    else:
-        node.inputs["False"] = false
-    if isinstance(true, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["True"], true)
-    else:
-        node.inputs["True"] = true
-    if isinstance(false, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["False"], false)
-    else:
-        node.inputs["False"] = false
-    if isinstance(true, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["True"], true)
-    else:
-        node.inputs["True"] = true
-    if isinstance(false, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["False"], false)
-    else:
-        node.inputs["False"] = false
-    if isinstance(true, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["True"], true)
-    else:
-        node.inputs["True"] = true
-    if isinstance(false, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["False"], false)
-    else:
-        node.inputs["False"] = false
-    if isinstance(true, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["True"], true)
-    else:
-        node.inputs["True"] = true
-    if isinstance(false, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["False"], false)
-    else:
-        node.inputs["False"] = false
-    if isinstance(true, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["True"], true)
-    else:
-        node.inputs["True"] = true
+        node.inputs[3] = true
     node.input_type = input_type
+
+def switch_int(switch=False, false=0.0, true=0.0, input_type='INT'):
+    node = ng.nodes.new("GeometryNodeSwitch")
+    if isinstance(switch, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[0], switch)
+    else:
+        node.inputs[0] = switch
+    if isinstance(false, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[4], false)
+    else:
+        node.inputs[4] = false
+    if isinstance(true, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[5], true)
+    else:
+        node.inputs[5] = true
+    node.input_type = input_type
+
+def switch_boolean(switch=False, false=0.0, true=0.0, input_type='BOOLEAN'):
+    node = ng.nodes.new("GeometryNodeSwitch")
+    if isinstance(switch, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[0], switch)
+    else:
+        node.inputs[0] = switch
+    if isinstance(false, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[6], false)
+    else:
+        node.inputs[6] = false
+    if isinstance(true, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[7], true)
+    else:
+        node.inputs[7] = true
+    node.input_type = input_type
+
+def switch_vector(switch=False, false=0.0, true=0.0, input_type='VECTOR'):
+    node = ng.nodes.new("GeometryNodeSwitch")
+    if isinstance(switch, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[0], switch)
+    else:
+        node.inputs[0] = switch
+    if isinstance(false, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[8], false)
+    else:
+        node.inputs[8] = false
+    if isinstance(true, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[9], true)
+    else:
+        node.inputs[9] = true
+    node.input_type = input_type
+
+def switch_color(switch=False, false=0.0, true=0.0, input_type='RGBA'):
+    node = ng.nodes.new("GeometryNodeSwitch")
+    if isinstance(switch, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[0], switch)
+    else:
+        node.inputs[0] = switch
+    if isinstance(false, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[10], false)
+    else:
+        node.inputs[10] = false
+    if isinstance(true, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[11], true)
+    else:
+        node.inputs[11] = true
+    node.input_type = input_type
+
+def switch_string(switch=False, false=0.0, true=0.0, input_type='STRING'):
+    node = ng.nodes.new("GeometryNodeSwitch")
+    if isinstance(switch, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[0], switch)
+    else:
+        node.inputs[0] = switch
+    if isinstance(false, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[12], false)
+    else:
+        node.inputs[12] = false
+    if isinstance(true, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[13], true)
+    else:
+        node.inputs[13] = true
+    node.input_type = input_type
+
+def switch_geometry(switch=False, false=0.0, true=0.0, input_type='GEOMETRY'):
+    node = ng.nodes.new("GeometryNodeSwitch")
+    if isinstance(switch, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[1], switch)
+    else:
+        node.inputs[1] = switch
+    if isinstance(false, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[14], false)
+    else:
+        node.inputs[14] = false
+    if isinstance(true, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[15], true)
+    else:
+        node.inputs[15] = true
+    node.input_type = input_type
+
+def switch_object(switch=False, false=0.0, true=0.0, input_type='OBJECT'):
+    node = ng.nodes.new("GeometryNodeSwitch")
+    if isinstance(switch, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[1], switch)
+    else:
+        node.inputs[1] = switch
+    if isinstance(false, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[16], false)
+    else:
+        node.inputs[16] = false
+    if isinstance(true, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[17], true)
+    else:
+        node.inputs[17] = true
+    node.input_type = input_type
+
+def switch_collection(switch=False, false=0.0, true=0.0, input_type='COLLECTION'):
+    node = ng.nodes.new("GeometryNodeSwitch")
+    if isinstance(switch, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[1], switch)
+    else:
+        node.inputs[1] = switch
+    if isinstance(false, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[18], false)
+    else:
+        node.inputs[18] = false
+    if isinstance(true, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[19], true)
+    else:
+        node.inputs[19] = true
+    node.input_type = input_type
+
+def switch_texture(switch=False, false=0.0, true=0.0, input_type='TEXTURE'):
+    node = ng.nodes.new("GeometryNodeSwitch")
+    if isinstance(switch, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[1], switch)
+    else:
+        node.inputs[1] = switch
+    if isinstance(false, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[20], false)
+    else:
+        node.inputs[20] = false
+    if isinstance(true, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[21], true)
+    else:
+        node.inputs[21] = true
+    node.input_type = input_type
+
+def switch_material(switch=False, false=0.0, true=0.0, input_type='MATERIAL'):
+    node = ng.nodes.new("GeometryNodeSwitch")
+    if isinstance(switch, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[1], switch)
+    else:
+        node.inputs[1] = switch
+    if isinstance(false, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[22], false)
+    else:
+        node.inputs[22] = false
+    if isinstance(true, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[23], true)
+    else:
+        node.inputs[23] = true
+    node.input_type = input_type
+
+
+def switch_image(switch=False, false=0.0, true=0.0, input_type='IMAGE'):
+    node = ng.nodes.new("GeometryNodeSwitch")
+    if isinstance(switch, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[1], switch)
+    else:
+        node.inputs[1] = switch
+    if isinstance(false, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[24], false)
+    else:
+        node.inputs[24] = false
+    if isinstance(true, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[25], true)
+    else:
+        node.inputs[25] = true
+    node.input_type = input_type
+
 
 def transform(geometry=None, translation=[0.0, 0.0, 0.0], rotation=[0.0, 0.0, 0.0], scale=[1.0, 1.0, 1.0], ):
     node = ng.nodes.new("GeometryNodeTransform")
@@ -2689,8 +3239,12 @@ def triangulate(mesh=None, selection=None, minimum_vertices=None, ngon_method='B
     node.ngon_method = ngon_method
     node.quad_method = quad_method
 
-def trim_curve(curve=None, selection=None, start=0.0, end=1.0, start=0.0, end=1.0, mode='FACTOR'):
+def trim_curve(curve=None, selection=None, start=0.0, end=1.0, mode='FACTOR'):
     node = ng.nodes.new("GeometryNodeTrimCurve")
+    if mode == 'FACTOR':
+        start_ind, end_ind = 1, 2
+    else:
+        start_ind, end_ind = 3, 4
     if isinstance(curve, bpy.types.NodeSocket):
         ng.links.new(node.inputs["Curve"], curve)
     else:
@@ -2700,21 +3254,13 @@ def trim_curve(curve=None, selection=None, start=0.0, end=1.0, start=0.0, end=1.
     else:
         node.inputs["Selection"] = selection
     if isinstance(start, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Start"], start)
+        ng.links.new(node.inputs[start_ind], start)
     else:
-        node.inputs["Start"] = start
+        node.inputs[start_ind] = start
     if isinstance(end, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["End"], end)
+        ng.links.new(node.inputs[end_ind], end)
     else:
-        node.inputs["End"] = end
-    if isinstance(start, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Start"], start)
-    else:
-        node.inputs["Start"] = start
-    if isinstance(end, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["End"], end)
-    else:
-        node.inputs["End"] = end
+        node.inputs[end_ind] = end
     node.mode = mode
 
 def uv_pack_islands(uv=[0.0, 0.0, 0.0], selection=None, margin=0.0010000000474974513, rotate=None, ):
