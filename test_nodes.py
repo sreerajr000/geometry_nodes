@@ -1,25 +1,25 @@
+import bpy
+import geometry_nodes as gn
 import sys
 sys.path.append(r'F:\geometry_nodes')
-import geometry_nodes as gn
-import bpy
 
 active_obj = bpy.context.active_object
 gn_name = 'Geometry Nodes'
 # Convert these later to classes
-inputs = [{'name': 'string', 'type': 'NodeSocketGeometry'}, 
-{'name': 'bool', 'type': 'NodeSocketBool'},
-{'name': 'material', 'type': 'NodeSocketMaterial'},
-{'name': 'vector', 'type': 'NodeSocketVector'},
-{'name': 'integer', 'type': 'NodeSocketInt'},
-{'name': 'geometry', 'type': 'NodeSocketString'},
-{'name': 'collection', 'type': 'NodeSocketCollection'},
-{'name': 'texture', 'type': 'NodeSocketTexture'},
-{'name': 'float', 'type': 'NodeSocketFloat'},
-{'name': 'color', 'type': 'NodeSocketColor'},
-{'name': 'object', 'type': 'NodeSocketObject'},
-{'name': 'image', 'type': 'NodeSocketImage'},
-{'name': 'rot', 'type': 'NodeSocketVectorEuler'},
-]
+inputs = [{'name': 'string', 'type': 'NodeSocketGeometry'},
+          {'name': 'bool', 'type': 'NodeSocketBool'},
+          {'name': 'material', 'type': 'NodeSocketMaterial'},
+          {'name': 'vector', 'type': 'NodeSocketVector'},
+          {'name': 'integer', 'type': 'NodeSocketInt'},
+          {'name': 'geometry', 'type': 'NodeSocketString'},
+          {'name': 'collection', 'type': 'NodeSocketCollection'},
+          {'name': 'texture', 'type': 'NodeSocketTexture'},
+          {'name': 'float', 'type': 'NodeSocketFloat'},
+          {'name': 'color', 'type': 'NodeSocketColor'},
+          {'name': 'object', 'type': 'NodeSocketObject'},
+          {'name': 'image', 'type': 'NodeSocketImage'},
+          {'name': 'rot', 'type': 'NodeSocketVectorEuler'},
+          ]
 outputs = inputs
 nodetree = gn.create_gn(gn_name, inputs, outputs)
 active_obj.modifiers['GeometryNodes'].node_group = nodetree
@@ -89,7 +89,7 @@ bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 #         ng.links.new(node.inputs["{inp}"], {arg})
 #     else:
 #         node.inputs["{inp}"] = {arg}\n'''
-    
+
 #     props = set(dir(node)).difference(COMMON_PROPS)
 #     for prop in props:
 #         fn += f'    node.{prop} = {prop}\n'

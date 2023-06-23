@@ -7,7 +7,7 @@ importlib.reload(gn)
 
 active_obj = bpy.context.active_object
 gn_name = 'Geometry Nodes'
-# Convert these later to classes
+
 inputs = [{'name': 'Geometry', 'type': 'NodeSocketGeometry'},
           {'name': 'Value', 'type': 'NodeSocketFloat'},
           ]
