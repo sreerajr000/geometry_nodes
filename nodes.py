@@ -3901,20 +3901,20 @@ def vector_curve(fac=1.0, vector=[0.0, 0.0, 0.0], mapping=<bpy_struct, CurveMapp
         node.inputs["Vector"] = vector
     node.mapping = mapping
 
-def vector_math(vector=[0.0, 0.0, 0.0], vector=[0.0, 0.0, 0.0], vector=[0.0, 0.0, 0.0], scale=1.0, operation='ADD'):
+def vector_math(a=[0.0, 0.0, 0.0], b=[0.0, 0.0, 0.0], c=[0.0, 0.0, 0.0], scale=1.0, operation='ADD'):
     node = ng.nodes.new("ShaderNodeVectorMath")
-    if isinstance(vector, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Vector"], vector)
+    if isinstance(a, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[0], a)
     else:
-        node.inputs["Vector"] = vector
-    if isinstance(vector, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Vector"], vector)
+        node.inputs[0] = a
+    if isinstance(b, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[1], b)
     else:
-        node.inputs["Vector"] = vector
-    if isinstance(vector, bpy.types.NodeSocket):
-        ng.links.new(node.inputs["Vector"], vector)
+        node.inputs[1] = b
+    if isinstance(c, bpy.types.NodeSocket):
+        ng.links.new(node.inputs[2], c)
     else:
-        node.inputs["Vector"] = vector
+        node.inputs[2] = c
     if isinstance(scale, bpy.types.NodeSocket):
         ng.links.new(node.inputs["Scale"], scale)
     else:
