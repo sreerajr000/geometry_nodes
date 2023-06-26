@@ -1,10 +1,11 @@
 import sys
-sys.path.append(r'D:\blender\geometry_nodes\dsl')
+sys.path.append(r'F:\geometry_nodes\dsl')
 import bpy
 from antlr4 import *
-from ExpressionLexer import ExpressionLexer
-from ExpressionParser import ExpressionParser
-from ExpressionVisitor import ExpressionVisitor
+from gnLexer import gnLexer
+from gnParser import gnParser
+from gnVisitor import gnVisitor
+
 from collections import deque
 
 def bfs_arrange_nodes(node_tree, root_node, base_spacing=20):
@@ -48,7 +49,13 @@ def bfs_arrange_nodes(node_tree, root_node, base_spacing=20):
 
     return node
 
-class Generator(ExpressionVisitor):
+def id_to_label(s):
+    s = s.replace('_', ' ')
+    s = s.title()
+    return s
+
+
+class Generator(gnVisitor):
     def __init__(self, ng):
         super().__init__()
         self.nodes = ng.nodes
@@ -56,25 +63,7 @@ class Generator(ExpressionVisitor):
         self.variables = {}
         self.current_y = 0
         self.current_x = 0
-    
-    def visitGroup_def(self, ctx:ExpressionParser.Group_defContext):
-        group_def = {'inputs': [], 'outputs': []}
-        group_name = ctx.ID().getText()
-
-        return_statement = ctx.return_statement()
-        outputs = [x.getText() for x in return_statement.ID()]
-        group_def['outputs'] = outputs
-
-        parameters = ctx.parameters().parameter()
-        for param in parameters:
-            param_type = param.type_().getText()
-            param_name = param.ID().getText()
-            default_value = param.default_value().getText() if param.default_value() is not None else None
-            group_def['inputs'].append([param_type, param_name, default_value])
-        
-        self.variables[group_name] = group_def
-        return self.visitChildren(ctx)
-    
+        self.ng = ng
     
     def create_node(self, type):
         node = self.nodes.new(type)
@@ -86,105 +75,101 @@ class Generator(ExpressionVisitor):
             self.current_y = 0
             self.current_x += 400  # Moving to a new column
         return node
-    
-    def visitAssignment(self, ctx):
-        # Get the variable name
-        var_name = ctx.ID().getText()
 
-        # Visit the expression
-        expr_node = self.visit(ctx.expression())
+    # Visit a parse tree produced by gnParser#program.
+    def visitProgram(self, ctx:gnParser.ProgramContext):
+        return self.visitChildren(ctx)
 
-        # Store the node for this variable
-        self.variables[var_name] = expr_node
+     # Visit a parse tree produced by gnParser#group.
+    def visitGroup(self, ctx:gnParser.GroupContext):
+        # If group name is not main, a new node group should be created and added to the main nodetree
+        params = self.visit(ctx.parameters()) # Params will return group inputs
+        outputs = self.visit(ctx.block()) # Blocks will return group outputs
 
-        return expr_node
-
-
-    def visitExpression(self, ctx):
-        # Visit all terms
-        nodes = [self.visit(t) for t in ctx.term()]
-
-        # Combine the nodes using addition or subtraction
-        for i in range(1, len(nodes)):
-            math_node = self.create_node('ShaderNodeMath')
-            math_node.operation = 'ADD' if ctx.getChild(i*2-1).getText() == "+" else 'SUBTRACT'
-            if isinstance(nodes[i-1], bpy.types.Node):
-                self.links.new(nodes[i-1].outputs[0], math_node.inputs[0])
-            else:
-                math_node.inputs[0].default_value = nodes[i-1]
-            if isinstance(nodes[i], bpy.types.Node):
-                self.links.new(nodes[i].outputs[0], math_node.inputs[1])
-            else:
-                math_node.inputs[1].default_value = nodes[i]
-            nodes[i] = math_node
-
-        return nodes[-1]
-
-    def visitTerm(self, ctx):
-        # Visit all factors
-        nodes = [self.visit(f) for f in ctx.factor()]
-
-        # Combine the nodes using multiplication or division
-        for i in range(1, len(nodes)):
-            math_node = self.create_node('ShaderNodeMath')
-            math_node.operation = 'MULTIPLY' if ctx.getChild(i*2-1).getText() == "*" else 'DIVIDE'
-            if isinstance(nodes[i-1], bpy.types.Node):
-                self.links.new(nodes[i-1].outputs[0], math_node.inputs[0])
-            else:
-                math_node.inputs[0].default_value = nodes[i-1]
-            if isinstance(nodes[i], bpy.types.Node):
-                self.links.new(nodes[i].outputs[0], math_node.inputs[1])
-            else:
-                math_node.inputs[1].default_value = nodes[i]
-            nodes[i] = math_node
-
-        return nodes[-1]
-
-
-    def visitFactor(self, ctx):
-        if ctx.NUMBER():
-            # Just return the number itself for now, we will handle this later
-            return float(ctx.NUMBER().getText())
-        elif ctx.ID():
-            # Lookup the variable node
-            var_name = ctx.ID().getText()
-            return self.variables[var_name]
+        if ctx.ID().getText() == 'main':
+            ng = self.ng
         else:
-            # Visit the expression in parentheses
-            return self.visit(ctx.expression())
+            ng = bpy.data.node_groups.new(ctx.ID().getText(), 'GeometryNodeTree')
+        
+        group_input = ng.nodes.new('NodeGroupInput')
+        group_output = ng.nodes.new('NodeGroupOutput')
 
+        for param in params:
+            group_input.outputs.new()
+
+
+
+    # Visit a parse tree produced by gnParser#parameters.
+    def visitParameters(self, ctx:gnParser.ParametersContext):
+        params = []
+        for param in ctx.parameter():
+            params.append(self.visit(param))
+        return params
+
+
+    # Visit a parse tree produced by gnParser#parameter.
+    def visitParameter(self, ctx:gnParser.ParameterContext):
+        param = {}
+        if ctx.value() is not None:
+            param['value'] = self.visit(ctx.value())
+        param['id'] = ctx.ID().getText()
+        param['type'] = ctx.type_().getText()
+        return param
+
+    # Visit a parse tree produced by gnParser#type.
+    def visitType(self, ctx:gnParser.TypeContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by gnParser#value.
+    def visitValue(self, ctx:gnParser.ValueContext):
+        value = ctx.getText()
+        if value[0] == '"' and value[-1] == '"':
+            return value[1:-1]
+        return float(value)
+
+
+    # Visit a parse tree produced by gnParser#block.
+    def visitBlock(self, ctx:gnParser.BlockContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by gnParser#statement.
+    def visitStatement(self, ctx:gnParser.StatementContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by gnParser#expr.
+    def visitExpr(self, ctx:gnParser.ExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by gnParser#exprList.
+    def visitExprList(self, ctx:gnParser.ExprListContext):
+        return self.visitChildren(ctx)
+
+    
+    
     
 def main():
-    expr = '''
-    group main():
-        a = 3.14 * 2;
-        b = a + 2.71;
-        c = b * b - 4 * a * 2.71;
-        d = (3 + 5) / 2;
-        e = d * d - 4 * a * c;
-        f = 2 * (3.14 + 2.71);
-        g = 2 * f + 3 * (4 - 1);
-        h = g / 2 * (2 + a);
-        i = h - e;
-        j = (i + e) / 2;
-        return j;
-    '''
+    with open(r'F:\geometry_nodes\dsl\test.dsl', 'r') as f:
+        expr = f.read()
 
     input_stream = InputStream(expr)
-    lexer = ExpressionLexer(input_stream)
+    lexer = gnLexer(input_stream)
     stream = CommonTokenStream(lexer)
-    parser = ExpressionParser(stream)
-    tree = parser.file_()
+    parser = gnParser(stream)
+    tree = parser.program()
 
+    bpy.ops.node.new_geometry_nodes_modifier()
     ng =  bpy.data.node_groups['Geometry Nodes']
     generator = Generator(ng)
     
     print("Starting visitor traversal...")
     result = generator.visit(tree)
-    print(result)
+    # print(result)
     
     print("Visitor traversal completed.")
-    print("Result:", generator.variables)
 
     # bfs_arrange_nodes(ng, ng.nodes[-1])
 
