@@ -10,24 +10,26 @@ parameter: type ID | type ID '=' value ;
 
 type : 'float' | 'coll' | 'str' | 'vec' | 'img' | 'geo' | 'obj' | 'bool' | 'int' | 'tex' | 'virtual' | 'mat' | 'col' ;
 
-value : STRING | NUMBER ;
+value : BOOLEAN | STRING | NUMBER;
 
 block : '{' statement* 'return' exprList? ';' '}' ; 
 
-statement: block | expr '=' expr ';' | expr ';' ;
+statement: expr '=' expr ';' | expr ';' ;
 
 expr: ID '(' exprList? ')'  // func call
-    | '-' expr // unary minus
-    | '!' expr // boolean not
-    | expr '*' expr
-    | expr ('+'|'-') expr
-    | expr '==' expr // equality comparison (lowest priority op)
+    | op='-' a=expr // unary minus
+    | op='!' a=expr // boolean not
+    | a=expr op=('*' | '/') b=expr
+    | a=expr op=('+' | '-') b=expr
+    | a=expr op='==' b=expr // equality comparison (lowest priority op)
     | ID // variable reference
     | value
     | '(' expr ')'
     ;
 
 exprList : (ID '=')? expr (',' (ID '=')? expr)*; // arg list
+
+BOOLEAN : 'true' | 'false' ;
 
 STRING : '"' (ESC | ~["\\])* '"' ;
 

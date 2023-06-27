@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'F:\geometry_nodes\dsl')
+sys.path.append(r'D:\blender\geometry_nodes\dsl')
 import bpy
 from antlr4 import *
 from gnLexer import gnLexer
@@ -7,6 +7,35 @@ from gnParser import gnParser
 from gnVisitor import gnVisitor
 
 from collections import deque
+
+socket_dict = {
+    'geo': 'NodeSocketGeometry',
+    'int': 'NodeSocketInt',
+    'float': 'NodeSocketFloat',
+    'col': 'NodeSocketColor',
+    'mat': 'NodeSocketMaterial',
+    'coll': 'NodeSocketCollection',
+    'str': 'NodeSocketString',
+    'vec': 'NodeSocketVector',
+    'img': 'NodeSocketImage',
+    'obj': 'NodeSocketObject',
+    'bool': 'NodeSocketBool',
+    'tex': 'NodeSocketTexture'
+}
+
+def assign_default_value(socket, value):
+    if isinstance(socket, bpy.types.NodeSocketInterfaceMaterial) or isinstance(socket, bpy.types.NodeSocketMaterial):
+        socket.default_value = bpy.data.materials[value]
+    elif isinstance(socket, bpy.types.NodeSocketInterfaceObject) or isinstance(socket, bpy.types.NodeSocketObject):
+        socket.default_value = bpy.data.objects[value]
+    elif isinstance(socket, bpy.types.NodeSocketInterfaceCollection) or isinstance(socket, bpy.types.NodeSocketCollection):
+        socket.default_value = bpy.data.collections[value]
+    elif isinstance(socket, bpy.types.NodeSocketInterfaceTexture) or isinstance(socket, bpy.types.NodeSocketTexture):
+        socket.default_value = bpy.data.textures[value]
+    elif isinstance(socket, bpy.types.NodeSocketInterfaceImage) or isinstance(socket, bpy.types.NodeSocketImage):
+        socket.default_value = bpy.data.images[value]
+    else:
+        socket.default_value = value
 
 def bfs_arrange_nodes(node_tree, root_node, base_spacing=20):
     visited = set()
@@ -95,7 +124,13 @@ class Generator(gnVisitor):
         group_output = ng.nodes.new('NodeGroupOutput')
 
         for param in params:
-            group_input.outputs.new()
+            ng.inputs.new(socket_dict[param['type']], id_to_label(param['id']))
+            if 'value' in param:
+                assign_default_value(ng.inputs[-1], param['value'])
+        
+        # Have to find some way to do the type inference
+        # for output in outputs:
+        #     ng.outputs.new(socket_dict[param['type']], id_to_label(param['id'])) 
 
 
 
@@ -124,6 +159,8 @@ class Generator(gnVisitor):
     # Visit a parse tree produced by gnParser#value.
     def visitValue(self, ctx:gnParser.ValueContext):
         value = ctx.getText()
+        if value in ['true', 'false']:
+            return bool(value)
         if value[0] == '"' and value[-1] == '"':
             return value[1:-1]
         return float(value)
@@ -131,17 +168,32 @@ class Generator(gnVisitor):
 
     # Visit a parse tree produced by gnParser#block.
     def visitBlock(self, ctx:gnParser.BlockContext):
-        return self.visitChildren(ctx)
+        ret = self.visit(ctx.exprList())
+        for statement in ctx.statement():
+            self.visit(statement)
+        return ret
 
 
     # Visit a parse tree produced by gnParser#statement.
     def visitStatement(self, ctx:gnParser.StatementContext):
-        return self.visitChildren(ctx)
-
+        for expr in ctx.expr():
+            self.visit(expr)
 
     # Visit a parse tree produced by gnParser#expr.
     def visitExpr(self, ctx:gnParser.ExprContext):
-        return self.visitChildren(ctx)
+        if ctx.getChildCount() == 3 and ctx.op is not None:
+            if ctx.op.text == '*':
+                print(ctx.getChild(0).getText(), ctx.getChild(2).getText())
+            elif ctx.op.text == '/':
+                print(ctx.getChild(0).getText(), ctx.getChild(2).getText())
+            elif ctx.op.text == '+':
+                print(ctx.getChild(0).getText(), ctx.getChild(2).getText())
+            elif ctx.op.text == '-':
+                print(ctx.getChild(0).getText(), ctx.getChild(2).getText())
+        elif ctx.getChildCount() == 1:
+            print(ctx.getText())
+        for expr in ctx.expr():
+            self.visit(expr)
 
 
     # Visit a parse tree produced by gnParser#exprList.
@@ -152,7 +204,7 @@ class Generator(gnVisitor):
     
     
 def main():
-    with open(r'F:\geometry_nodes\dsl\test.dsl', 'r') as f:
+    with open(r'D:\blender\geometry_nodes\dsl\test.dsl', 'r') as f:
         expr = f.read()
 
     input_stream = InputStream(expr)
